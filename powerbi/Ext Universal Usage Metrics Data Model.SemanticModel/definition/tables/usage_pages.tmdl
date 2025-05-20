@@ -1,0 +1,54 @@
+table usage_pages
+	lineageTag: 5f9072dd-9bc1-4b5f-adbd-6a1c798018eb
+
+	column UsageDatasetId
+		dataType: string
+		lineageTag: 338b952b-43ec-4fde-8bad-585cda92e308
+		summarizeBy: none
+		sourceColumn: UsageDatasetId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportId
+		dataType: string
+		lineageTag: 2ef3da72-4041-4517-a190-df3dbf184dba
+		summarizeBy: none
+		sourceColumn: ReportId
+
+		annotation SummarizationSetBy = Automatic
+
+	column SectionId
+		dataType: string
+		lineageTag: 76b57814-b511-4f81-8984-d75b67f28bc7
+		summarizeBy: none
+		sourceColumn: SectionId
+
+		annotation SummarizationSetBy = Automatic
+
+	column SectionName
+		dataType: string
+		lineageTag: 2a5ee80c-5045-4f41-b359-eaa749ae6691
+		summarizeBy: none
+		sourceColumn: SectionName
+
+		annotation SummarizationSetBy = Automatic
+
+	column WorkspaceId
+		dataType: string
+		lineageTag: 05290a6c-ecf5-43d0-a944-e933210c20ae
+		summarizeBy: none
+		sourceColumn: WorkspaceId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition usage_pages = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("znbjxinpfs5u3cxz7s7bppllcq-4kbsyv3a5r4ulfsicaruwsrq2e.datawarehouse.fabric.microsoft.com", "FUAM_Ext_Lakehouse"),
+				    dbo_usage_pages = Source{[Schema="dbo",Item="usage_pages"]}[Data]
+				in
+				    dbo_usage_pages
+
+	annotation PBI_ResultType = Table
+

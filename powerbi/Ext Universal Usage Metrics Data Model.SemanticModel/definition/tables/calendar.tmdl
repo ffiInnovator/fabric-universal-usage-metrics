@@ -1,0 +1,215 @@
+table calendar
+	lineageTag: 1fecc21e-a004-4658-acd4-f22b9f644f8c
+
+	column IsPreviousMonth
+		dataType: int64
+		formatString: 0
+		lineageTag: c7471add-8576-4c2d-a9c6-2ea2f4771d02
+		summarizeBy: sum
+		sourceColumn: IsPreviousMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayOfWeekNum
+		dataType: int64
+		formatString: 0
+		lineageTag: 833e0e2d-a709-43e0-b440-7295bf79c6f6
+		summarizeBy: sum
+		sourceColumn: DayOfWeekNum
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayOfWeek
+		dataType: string
+		lineageTag: d673a085-e18c-4ef3-bdd3-4da1b978fb38
+		summarizeBy: none
+		sourceColumn: DayOfWeek
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: 2a37f469-8034-47ec-9c5c-2c1992fed5ed
+		summarizeBy: sum
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		dataType: int64
+		formatString: 0
+		lineageTag: 4b3dd9f9-ef34-4517-a229-56d6a7c757ca
+		summarizeBy: sum
+		sourceColumn: Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 86a30a76-ee57-4ae6-8c62-613b00485c94
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsInLast30Days
+		dataType: int64
+		formatString: 0
+		lineageTag: 80d74fee-c9b2-44b8-b10d-120b3d028200
+		summarizeBy: sum
+		sourceColumn: IsInLast30Days
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekOfYear
+		dataType: int64
+		formatString: 0
+		lineageTag: 20d3898c-7031-4a9a-aedb-f1167897b43f
+		summarizeBy: sum
+		sourceColumn: WeekOfYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsPreviousYear
+		dataType: int64
+		formatString: 0
+		lineageTag: 6acb4264-3ebb-45a3-a2de-9ce3ccca93e0
+		summarizeBy: sum
+		sourceColumn: IsPreviousYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCurrentYear
+		dataType: int64
+		formatString: 0
+		lineageTag: fb5083a6-1593-42e9-89cd-4dec201e6167
+		summarizeBy: sum
+		sourceColumn: IsCurrentYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsInLast14Days
+		dataType: int64
+		formatString: 0
+		lineageTag: 177cdfd9-33f3-43b5-9d44-373cb783cac7
+		summarizeBy: sum
+		sourceColumn: IsInLast14Days
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonth
+		dataType: string
+		lineageTag: a0149170-2b57-4c51-978c-dbc22a3c6903
+		summarizeBy: none
+		sourceColumn: YearMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: string
+		lineageTag: f2b0ef80-8e13-4b6b-858b-93fb5e326803
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: string
+		lineageTag: 27748bb0-2a64-482b-9a0d-fceee57eca49
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCurrentQuarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 89d7cd80-d181-481b-ad59-1832573754e0
+		summarizeBy: sum
+		sourceColumn: IsCurrentQuarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date2Key
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a19917b9-13a2-48da-983a-20f0cfb62c88
+		summarizeBy: none
+		sourceColumn: Date2Key
+
+		variation Variation
+			isDefault
+			relationship: c59a0fea-f1c7-4c2d-986e-1d9cc34c679e
+			defaultHierarchy: LocalDateTable_6ffb6192-3469-4d58-93c9-e36a9fa85d25.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column IsCurrentMonth
+		dataType: int64
+		formatString: 0
+		lineageTag: abf4380f-4907-4171-a745-1f956c2c954f
+		summarizeBy: sum
+		sourceColumn: IsCurrentMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column StartOfWeekDate = 'calendar'[Date2Key] - ('calendar'[Day] - 1)
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b06f3f74-513d-47d9-8390-2f88373aed5b
+		summarizeBy: none
+
+		variation Variation
+			isDefault
+			relationship: 954ff9f2-bb73-41e3-9337-e0d271903ed6
+			defaultHierarchy: LocalDateTable_296bce1f-642d-4877-bb83-285a3b925990.'Date Hierarchy'
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column EndOfWeekDate = 'calendar'[StartOfWeekDate] + 6
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ca1d48d9-0929-49b7-bb68-43de767c4cbd
+		summarizeBy: none
+
+		variation Variation
+			isDefault
+			relationship: 95996c74-97be-47c8-a066-efc3261367d0
+			defaultHierarchy: LocalDateTable_1cd2e90a-a0ff-4402-82aa-1203411dcc83.'Date Hierarchy'
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Has Usage' =
+			
+			AND ( 'calendar'[Date2Key] >= [First Usage], 'calendar'[Date2Key] <= [Last Usage] )
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 8a4f5f30-257d-4680-8d91-cc79751f97e1
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition calendar = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("znbjxinpfs5u3cxz7s7bppllcq-4kbsyv3a5r4ulfsicaruwsrq2e.datawarehouse.fabric.microsoft.com", "FUAM_Ext_Lakehouse"),
+				    dbo_calendar = Source{[Schema="dbo",Item="calendar"]}[Data]
+				in
+				    dbo_calendar
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

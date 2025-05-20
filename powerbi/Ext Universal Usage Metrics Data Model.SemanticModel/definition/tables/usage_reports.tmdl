@@ -1,0 +1,80 @@
+table usage_reports
+	lineageTag: e3b7a311-e3ae-434c-9def-c91b28da54fb
+
+	column UsageDatasetId
+		dataType: string
+		lineageTag: 57a201f9-4c44-4d98-aa9e-13540415114d
+		summarizeBy: none
+		sourceColumn: UsageDatasetId
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsUsageMetricsReport
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 14c6fd7b-8e3c-469d-b87a-9708426157f7
+		summarizeBy: none
+		sourceColumn: IsUsageMetricsReport
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrganizationId
+		dataType: string
+		lineageTag: e4a178b5-635a-4164-85b7-8c1d78c3e7db
+		summarizeBy: none
+		sourceColumn: OrganizationId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportId
+		dataType: string
+		lineageTag: c77d1577-383f-4056-be4e-b234444d4dcc
+		summarizeBy: none
+		sourceColumn: ReportId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportName
+		dataType: string
+		lineageTag: 1c1af791-6980-4afd-bf37-b5c942146298
+		summarizeBy: none
+		sourceColumn: ReportName
+
+		annotation SummarizationSetBy = Automatic
+
+	column WorkspaceId
+		dataType: string
+		lineageTag: 3989a0b8-4bc8-42f1-9101-f3c12455694f
+		summarizeBy: none
+		sourceColumn: WorkspaceId
+
+		annotation SummarizationSetBy = Automatic
+
+	column WorkspaceName = RELATED(usage_workspaces[WorkspaceName])
+		lineageTag: 59d1f0c6-ee4f-4afc-b6cd-884138d7874d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Workspace Hierarchy'
+		lineageTag: 3b454fba-eb90-457f-83ec-56ff9ec76513
+
+		level WorkspaceName
+			lineageTag: 8055e859-4a78-40a6-b02e-784c9d3de477
+			column: WorkspaceName
+
+		level ReportName
+			lineageTag: 504dbe24-c3d3-435f-8248-a7e339592e7f
+			column: ReportName
+
+	partition usage_reports = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("znbjxinpfs5u3cxz7s7bppllcq-4kbsyv3a5r4ulfsicaruwsrq2e.datawarehouse.fabric.microsoft.com", "FUAM_Ext_Lakehouse"),
+				    dbo_usage_reports = Source{[Schema="dbo",Item="usage_reports"]}[Data]
+				in
+				    dbo_usage_reports
+
+	annotation PBI_ResultType = Table
+

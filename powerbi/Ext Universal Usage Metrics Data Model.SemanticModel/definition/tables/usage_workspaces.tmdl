@@ -1,0 +1,110 @@
+table usage_workspaces
+	lineageTag: 5a51e97b-c066-49fe-b3bf-302d0a6f8813
+
+	column WorkspaceId
+		dataType: string
+		lineageTag: 39503465-5bf5-4ceb-b1a5-c415aa8d8a81
+		summarizeBy: none
+		sourceColumn: WorkspaceId
+
+		annotation SummarizationSetBy = Automatic
+
+	column WorkspaceName
+		dataType: string
+		lineageTag: c757a014-39ba-4e0e-bab1-9684c24be8ab
+		summarizeBy: none
+		sourceColumn: WorkspaceName
+
+		annotation SummarizationSetBy = Automatic
+
+	column WorkspaceDescription
+		dataType: string
+		lineageTag: c7dc3ea3-cca5-4e0f-8f51-358f1c197b0a
+		summarizeBy: none
+		sourceColumn: WorkspaceDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column HasWorkspaceLevelSettings
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 2aeb5972-7509-4a84-9f53-7ad96584cb79
+		summarizeBy: none
+		sourceColumn: HasWorkspaceLevelSettings
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: eb65cfde-3217-4cb8-a27e-7dbb045d4f37
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column Type
+		dataType: string
+		lineageTag: 0e828a46-4061-4d33-8bc7-669c698eb735
+		summarizeBy: none
+		sourceColumn: Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column CapacityId
+		dataType: string
+		lineageTag: 0483bed4-1ea9-4736-b963-9c12d67acf39
+		summarizeBy: none
+		sourceColumn: CapacityId
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsOnDedicatedCapacity
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 2317fa3e-5f3d-407a-8948-7957de1f0263
+		summarizeBy: none
+		sourceColumn: IsOnDedicatedCapacity
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsReadOnly
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 7a5d79cc-ec11-4210-bc2b-e17b342820db
+		summarizeBy: none
+		sourceColumn: IsReadOnly
+
+		annotation SummarizationSetBy = Automatic
+
+	column fuam_modified_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 28a41eeb-eb82-4b97-99d1-573937055b9c
+		summarizeBy: none
+		sourceColumn: fuam_modified_at
+
+		variation Variation
+			isDefault
+			relationship: 5565a79c-a265-43bd-8783-aaa67e6c33af
+			defaultHierarchy: LocalDateTable_18b1157c-f023-4e78-b9c9-6a5d48ef24cc.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column fuam_deleted
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 2e8fe9ce-9e2f-4af8-b0f7-39c938030d72
+		summarizeBy: none
+		sourceColumn: fuam_deleted
+
+		annotation SummarizationSetBy = Automatic
+
+	partition usage_workspaces = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("znbjxinpfs5u3cxz7s7bppllcq-4kbsyv3a5r4ulfsicaruwsrq2e.datawarehouse.fabric.microsoft.com", "FUAM_Ext_Lakehouse"),
+				    dbo_usage_workspaces = Source{[Schema="dbo",Item="usage_workspaces"]}[Data]
+				in
+				    dbo_usage_workspaces
+

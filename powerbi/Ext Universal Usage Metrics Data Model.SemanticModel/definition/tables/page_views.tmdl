@@ -1,0 +1,190 @@
+table page_views
+	lineageTag: 61d82f6d-c590-4297-9a95-267d420937ec
+
+	column UsageDatasetId
+		dataType: string
+		lineageTag: 49803f7d-91a6-4e39-8627-f030ee934f70
+		summarizeBy: none
+		sourceColumn: UsageDatasetId
+
+		annotation SummarizationSetBy = Automatic
+
+	column AppGuid
+		dataType: string
+		lineageTag: 24131bab-de7c-47bc-a24e-57648644ea03
+		summarizeBy: none
+		sourceColumn: AppGuid
+
+		annotation SummarizationSetBy = Automatic
+
+	column AppName
+		dataType: string
+		lineageTag: a8f21176-27bf-4e8f-a751-3c4458510798
+		summarizeBy: none
+		sourceColumn: AppName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Client
+		dataType: string
+		lineageTag: 20bc081e-342c-4150-bac6-ec6a7627d465
+		summarizeBy: none
+		sourceColumn: Client
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: string
+		lineageTag: 77fc917e-080d-43b0-b033-975508673141
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeviceBrowserVersion
+		dataType: string
+		lineageTag: a5e341e9-8b29-4c44-920d-6c145511ecc2
+		summarizeBy: none
+		sourceColumn: DeviceBrowserVersion
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeviceOSVersion
+		dataType: string
+		lineageTag: f50d0b46-12fc-43c1-a58c-51bf038813ab
+		summarizeBy: none
+		sourceColumn: DeviceOSVersion
+
+		annotation SummarizationSetBy = Automatic
+
+	column OriginalReportId
+		dataType: string
+		lineageTag: 2ac02b1f-de0b-4377-828b-fd66dfd34e10
+		summarizeBy: none
+		sourceColumn: OriginalReportId
+
+		annotation SummarizationSetBy = Automatic
+
+	column OriginalWorkspaceId
+		dataType: string
+		lineageTag: b764280d-a17b-4ebe-8060-11ed57f0ecf3
+		summarizeBy: none
+		sourceColumn: OriginalWorkspaceId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportId
+		dataType: string
+		lineageTag: 7dc8c58b-cdcc-496c-8cab-8a073ddffea8
+		summarizeBy: none
+		sourceColumn: ReportId
+
+		annotation SummarizationSetBy = Automatic
+
+	column SectionId
+		dataType: string
+		lineageTag: 2f827f9d-bac3-49e1-8603-17b1d6d916ba
+		summarizeBy: none
+		sourceColumn: SectionId
+
+		annotation SummarizationSetBy = Automatic
+
+	column SessionSource
+		dataType: string
+		lineageTag: 1230811b-eefe-4bb7-aacb-348e914d1b49
+		summarizeBy: none
+		sourceColumn: SessionSource
+
+		annotation SummarizationSetBy = Automatic
+
+	column TenantId
+		dataType: string
+		lineageTag: d195b6c4-07c3-443f-b83c-3d86f04fd8ac
+		summarizeBy: none
+		sourceColumn: TenantId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreationTime
+		dataType: string
+		lineageTag: 989fc825-10b3-486b-bac8-ba62d4cd27be
+		summarizeBy: none
+		sourceColumn: CreationTime
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserId
+		dataType: string
+		lineageTag: 705cd5e2-ce24-4a67-856f-f615c35bf6c6
+		summarizeBy: none
+		sourceColumn: UserId
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserKey
+		dataType: string
+		lineageTag: 5267c494-9e41-4d0f-98f8-9e3268b33730
+		summarizeBy: none
+		sourceColumn: UserKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column WorkspaceId
+		dataType: string
+		lineageTag: 8b9df777-0393-4711-8c83-aa52da2af80d
+		summarizeBy: none
+		sourceColumn: WorkspaceId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreationDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 5321e0fd-8afa-499c-92a1-15ba0efa74c7
+		summarizeBy: none
+		sourceColumn: CreationDate
+
+		variation Variation
+			isDefault
+			relationship: 21e24bcf-eb19-4a4f-8b53-811553c473e5
+			defaultHierarchy: LocalDateTable_ebaa93a3-58ad-42f5-bc0b-854b66549c9b.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CreationDateKey
+		dataType: string
+		lineageTag: 1137b7c4-12e0-4f54-9ae1-0697e3ea8012
+		summarizeBy: none
+		sourceColumn: CreationDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreationHour
+		dataType: string
+		lineageTag: 83aa6453-682b-49c4-b6f0-a4cc698d7cb4
+		summarizeBy: none
+		sourceColumn: CreationHour
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreationMinute
+		dataType: string
+		lineageTag: 049fff0d-29b8-4f6c-908f-42e4da9251c6
+		summarizeBy: none
+		sourceColumn: CreationMinute
+
+		annotation SummarizationSetBy = Automatic
+
+	partition page_views = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("znbjxinpfs5u3cxz7s7bppllcq-4kbsyv3a5r4ulfsicaruwsrq2e.datawarehouse.fabric.microsoft.com", "FUAM_Ext_Lakehouse"),
+				    dbo_page_views = Source{[Schema="dbo",Item="page_views"]}[Data]
+				in
+				    dbo_page_views
+
+	annotation PBI_ResultType = Table
+

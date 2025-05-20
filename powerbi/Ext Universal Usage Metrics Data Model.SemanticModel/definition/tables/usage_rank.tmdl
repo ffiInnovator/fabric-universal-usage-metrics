@@ -1,0 +1,73 @@
+table usage_rank
+	lineageTag: 981bb3c4-d448-4cdd-9a98-98f69244ec9c
+
+	column UsageDatasetId
+		dataType: string
+		lineageTag: f5df5670-89af-41bc-b2e9-1537fcb00a82
+		summarizeBy: none
+		sourceColumn: UsageDatasetId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportId
+		dataType: string
+		lineageTag: a59f2fec-139b-49d4-a683-40f0dc6b2303
+		summarizeBy: none
+		sourceColumn: ReportId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportRank
+		dataType: int64
+		formatString: 0
+		lineageTag: 56bde462-780c-41e6-8f54-c26bffe38e73
+		summarizeBy: sum
+		sourceColumn: ReportRank
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportViewCount
+		dataType: int64
+		formatString: 0
+		lineageTag: c8985eae-2b33-4ccb-af72-c67f6592c48f
+		summarizeBy: sum
+		sourceColumn: ReportViewCount
+
+		annotation SummarizationSetBy = Automatic
+
+	column TenantId
+		dataType: string
+		lineageTag: 501a4f1e-0a9e-46b0-b35c-dd9b70442d47
+		summarizeBy: none
+		sourceColumn: TenantId
+
+		annotation SummarizationSetBy = Automatic
+
+	column TotalReportCount
+		dataType: int64
+		formatString: 0
+		lineageTag: c204eb3b-85ab-471a-a860-bf57fbab300b
+		summarizeBy: sum
+		sourceColumn: TotalReportCount
+
+		annotation SummarizationSetBy = Automatic
+
+	column WorkspaceId
+		dataType: string
+		lineageTag: acb8229e-1fa7-4f70-8c41-69d3fecff091
+		summarizeBy: none
+		sourceColumn: WorkspaceId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition usage_rank = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("znbjxinpfs5u3cxz7s7bppllcq-4kbsyv3a5r4ulfsicaruwsrq2e.datawarehouse.fabric.microsoft.com", "FUAM_Ext_Lakehouse"),
+				    dbo_usage_rank = Source{[Schema="dbo",Item="usage_rank"]}[Data]
+				in
+				    dbo_usage_rank
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,1107 @@
+table Metrics
+	lineageTag: 59c1b9e4-3b39-40ff-a368-25e1053d5296
+
+	measure 'Report views %' =
+			
+			COUNT ( 'report_views'[CreationTime] )
+			    / CALCULATE (
+			        COUNT ( 'report_views'[CreationTime] ),
+			        ALLSELECTED ( 'report_views' )
+			    ) + 0
+		displayFolder: Views
+		lineageTag: 52687e95-e0c6-43a2-a4da-cf3f894baf01
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Report views' =
+			
+			VAR sop =
+			    CALCULATE ( MIN ( 'calendar'[Date] ), ALLSELECTED ( 'calendar' ) )
+			VAR eop =
+			    CALCULATE ( MAX ( 'calendar'[Date] ), ALLSELECTED ( 'calendar' ) )
+			RETURN
+			    IF (
+			        AND ( MIN ( 'calendar'[Date] ) >= sop, MAX ( 'calendar'[Date] ) <= eop ),
+			        COUNTROWS ( 'report_views' ),
+			        0 //BLANK ()
+			    )
+		formatString: 0
+		displayFolder: Views
+		lineageTag: 6029d4cc-9541-4ecc-adc8-ea13f3102077
+
+	measure 'Weekly Views' =
+			
+			VAR sop =
+			    CALCULATE ( MIN ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ), 'calendar'[Day] = MIN ( 'calendar'[Day] ) )
+			VAR eop =
+			    CALCULATE ( MAX ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ), 'calendar'[Day] = MAX ( 'calendar'[Day] ) )
+			RETURN
+			    IF (
+			        AND ( MIN ( 'calendar'[Date2Key] ) >= sop, MAX ( 'calendar'[Date2Key] ) <= eop ),
+			        CALCULATE (
+			            COUNTROWS ( 'report_views' ),
+			            DATESBETWEEN (
+			                'calendar'[Date2Key],
+			                MIN ( 'calendar'[StartOfWeekDate] ),
+			                MAX ( 'calendar'[EndOfWeekDate] )
+			            )
+			        ),
+			        BLANK ()
+			    )
+		formatString: 0
+		displayFolder: Views
+		lineageTag: 5713e3d1-5c43-460c-94f0-56a0ff0bd166
+
+	measure 'Report viewers' =
+			
+			VAR sop =
+			    CALCULATE ( MIN ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			VAR eop =
+			    CALCULATE ( MAX ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			RETURN
+			    IF (
+			        AND ( MIN ( 'calendar'[Date2Key] ) >= sop, MAX ( 'calendar'[Date2Key] ) <= eop ),
+			        DISTINCTCOUNT('report_views'[UserKey]),
+			        0
+			    )
+		formatString: 0
+		displayFolder: Views
+		lineageTag: 144f0c2f-47d1-48b5-8446-86c16aca95f6
+
+	measure 'Weekly Viewers' =
+			
+			VAR sop =
+			    CALCULATE ( MIN ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ), 'calendar'[Day] = MIN ( 'calendar'[Day] ) )
+			VAR eop =
+			    CALCULATE ( MAX ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ), 'calendar'[Day] = MAX ( 'calendar'[Day] ) )
+			RETURN
+			    IF (
+			        AND ( MIN ( 'calendar'[Date2Key] ) >= sop, MAX ( 'calendar'[Date2Key] ) <= eop ),
+			        CALCULATE (
+			            DISTINCTCOUNT ( 'report_views'[UserKey] ),
+			            DATESBETWEEN (
+			                Calendar[Date2Key],
+			                MIN ( 'calendar'[StartOfWeekDate] ),
+			                MAX ( 'calendar'[EndOfWeekDate] )
+			            )
+			        ),
+			        BLANK ()
+			    )
+		formatString: 0
+		displayFolder: Views
+		lineageTag: 2811babe-43fa-49d4-ad55-880e2741914c
+
+	measure 'Workspace and report filter' =
+			
+			VAR WorkspaceDesc =
+			    IF (
+			        ISFILTERED ( 'usage_reports'[WorkspaceName] ),
+			        IF (
+			            [Workspaces] = 1,
+			            VALUES ( 'usage_reports'[WorkspaceName] ),
+			            "Multiple" & " (" & [Workspaces] & ")"
+			        ),
+			        "All"
+			    )
+			VAR ReportDesc =
+			    IF (
+			        ISFILTERED ( 'usage_reports'[ReportName] ),
+			        IF (
+			            AND ( [Workspaces] > 1, [Report names] = 1 ),
+			            VALUES ( 'usage_reports'[ReportName] ),
+			            IF (
+			                [Report names] = 1,
+			                VALUES ( 'usage_reports'[ReportName] ),
+			                "Multiple" & " (" & [Reports] & ")"
+			            )
+			        ),
+			        "All"
+			    )
+			RETURN
+			    "Workspace: " & WorkspaceDesc & " | Report: " & ReportDesc
+		displayFolder: Dynamic subtitles
+		lineageTag: f02eb7a1-77e8-4612-b418-b273231bc7de
+
+	measure Workspaces = DISTINCTCOUNT( 'usage_reports'[WorkspaceId] )
+		formatString: 0
+		displayFolder: Dynamic subtitles
+		lineageTag: de2bbe51-9ee6-4e91-9339-9f3848bbbbb5
+
+	measure Reports = DISTINCTCOUNT( 'usage_reports'[ReportId] )
+		formatString: 0
+		displayFolder: Dynamic subtitles
+		lineageTag: eb3a5f3f-87a5-4204-bffc-37fce44c092c
+
+	measure 'Report names' = DISTINCTCOUNT( 'usage_reports'[ReportName] )
+		formatString: 0
+		displayFolder: Dynamic subtitles
+		lineageTag: c1621a24-f64c-429e-b330-2400ed21d0ec
+
+	measure 'Embedding for your organziation' =
+			CALCULATE (
+			    [Report views],
+			    'report_views'[OriginalConsumptionMethod] = "Embedding for your organization"
+			) + 0
+		formatString: 0
+		displayFolder: Embedding
+		lineageTag: 6144a411-321f-4104-b516-3eecff2ee740
+
+	measure 'PowerPoint embedding' =
+			CALCULATE (
+			    [Report views],
+			    'report_views'[OriginalConsumptionMethod] = "PowerPoint add-in"
+			) + 0
+		formatString: 0
+		displayFolder: Embedding
+		lineageTag: 90fabca0-b47e-48b1-9726-7df9c6dc7d82
+
+	measure 'Simplified embedding' =
+			CALCULATE (
+			    [Report views],
+			    'report_views'[OriginalConsumptionMethod] = "Simplified embedding"
+			) + 0
+		formatString: 0
+		displayFolder: Embedding
+		lineageTag: 82135c9c-aaaa-4f36-961c-14a0085b5d95
+
+	measure 'Page views' =
+			
+			VAR sop =
+			    CALCULATE ( MIN ( 'calendar'[Date2Key] ), ALLSELECTED ( 'Calendar' ) )
+			VAR eop =
+			    CALCULATE ( MAX ( 'calendar'[Date2Key] ), ALLSELECTED ( 'Calendar' ) )
+			RETURN
+			    IF (
+			        AND ( MIN ( 'calendar'[Date2Key] ) >= sop, MAX ( 'calendar'[Date2Key] ) <= eop ),
+			        COUNTROWS('page_views'),
+			        0
+			    )
+		formatString: 0
+		displayFolder: Views
+		lineageTag: e79678a3-0916-4305-b117-6134f7a3c150
+
+	measure 'Total page users' =
+			
+			VAR sop =
+			    CALCULATE ( MIN ( 'calendar'[Date2Key] ), ALLSELECTED ( 'Calendar' ) )
+			VAR eop =
+			    CALCULATE ( MAX ( 'calendar'[Date2Key] ), ALLSELECTED ( 'Calendar' ) )
+			RETURN
+			    IF (
+			        AND ( MIN ( 'calendar'[Date2Key] ) >= sop, MAX ( 'calendar'[Date2Key] ) <= eop ),
+			        DISTINCTCOUNT('page_views'[UserKey]),
+			        0
+			    )
+		formatString: 0
+		displayFolder: Views
+		lineageTag: 26edbbf4-a3ac-4449-9320-b4f5704a1330
+
+	measure 'View trend' =
+			
+			VAR startDate =
+			    CALCULATE ( MIN ( 'report_views'[CreationDate] ), ALLSELECTED ( 'report_views' ) )
+			VAR endDate =
+			    CALCULATE ( MAX ( 'report_views'[CreationDate] ), ALLSELECTED ( 'report_views' ) )
+			VAR numberOfDays =
+			    DATEDIFF ( startDate, endDate, DAY ) + 1
+			VAR periodLength =
+			    INT ( numberOfDays / 2 ) - 1
+			VAR middleDate1 =
+			    CALCULATE (
+			        LASTDATE (
+			            DATESBETWEEN ( 'report_views'[CreationDate], startDate, startDate + periodLength )
+			        ),
+			        ALLSELECTED ( 'report_views' )
+			    )
+			VAR middleDate2 = middleDate1 + 1
+			VAR firstPeriod =
+			    CALCULATE (
+			        COUNTX ( 'report_views', [ReportId] ),
+			        DATESBETWEEN ( 'report_views'[CreationDate], startDate, middleDate1 )
+			    )
+			VAR secondPeriod =
+			    CALCULATE (
+			        COUNTX ( 'report_views', [ReportId] ),
+			        DATESBETWEEN ( 'report_views'[CreationDate], middleDate2, endDate )
+			    )
+			RETURN
+			    DIVIDE ( secondPeriod - firstPeriod, firstPeriod, 0 )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Trends
+		lineageTag: 9eb93272-6874-4105-90be-fb3503ee575e
+
+	measure 'Performance trend' = ```
+			VAR startDate =
+			    CALCULATE ( MIN ( 'load_times'[CreationDate] ), ALLSELECTED ( 'load_times' ) )
+			VAR endDate =
+			    CALCULATE ( MAX ( 'load_times'[CreationDate] ), ALLSELECTED ( 'load_times' ) )
+			VAR numberOfDays =
+			    DATEDIFF ( startDate, endDate, DAY ) + 1
+			VAR periodLength =
+			    INT ( numberOfDays / 2 ) - 1
+			VAR middleDate1 =
+			    CALCULATE (
+			        LASTDATE (
+			            DATESBETWEEN ( 'load_times'[CreationDate], startDate, startDate + periodLength )
+			        ),
+			        ALLSELECTED ( 'load_times' )
+			    )
+			VAR middleDate2 = middleDate1 + 1
+			VAR firstPeriod =
+			    CALCULATE (
+			        [P-50],
+			        DATESBETWEEN ( 'load_times'[CreationDate], startDate, middleDate1 )
+			    )
+			VAR secondPeriod =
+			    CALCULATE (
+			        [P-50],
+			        DATESBETWEEN ( 'load_times'[CreationDate], middleDate2, endDate )
+			    )
+			RETURN
+			    DIVIDE ( secondPeriod - firstPeriod, firstPeriod ) + 0 * -1
+			
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Trends
+		lineageTag: 5398265f-8b1e-44f7-b5ea-e21b0557508e
+
+		changedProperty = FormatString
+
+	measure 'P-10 trend' = ```
+			VAR numberOfDays =
+			    DATEDIFF ( MIN ( 'report_views'[CreationDate] ), MAX ( 'report_views'[CreationDate] ), DAY ) + 1
+			VAR periodLength =
+			    INT ( numberOfDays / 2 ) - 1
+			VAR firstPeriod =
+			    CALCULATE (
+			        [P-10],
+			        DATESBETWEEN (
+			            'load_times'[CreationDate],
+			            MIN ( 'load_times'[CreationDate] ),
+			            MIN ( 'load_times'[CreationDate] ) + periodLength
+			        )
+			    )
+			VAR secondPeriod =
+			    CALCULATE (
+			        [P-10],
+			        DATESBETWEEN (
+			            'load_times'[CreationDate],
+			            MAX ( 'load_times'[CreationDate] ) - periodLength,
+			            MAX ( 'load_times'[CreationDate] )
+			        )
+			    )
+			RETURN
+			    DIVIDE ( secondPeriod - firstPeriod, firstPeriod ) + 0 * -1
+			
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Trends
+		lineageTag: 017b1a14-151a-45a3-ab4a-cb3745cd71a7
+
+	measure 'P-25 trend' = ```
+			VAR numberOfDays =
+			    DATEDIFF ( MIN ( 'report_views'[CreationDate] ), MAX ( 'report_views'[CreationDate] ), DAY ) + 1
+			VAR periodLength =
+			    INT ( numberOfDays / 2 ) - 1
+			VAR firstPeriod =
+			    CALCULATE (
+			        [P-25],
+			        DATESBETWEEN (
+			            'load_times'[CreationDate],
+			            MIN ( 'load_times'[CreationDate] ),
+			            MIN ( 'load_times'[CreationDate] ) + periodLength
+			        )
+			    )
+			VAR secondPeriod =
+			    CALCULATE (
+			        [P-25],
+			        DATESBETWEEN (
+			            'load_times'[CreationDate],
+			            MAX ( 'load_times'[CreationDate] ) - periodLength,
+			            MAX ( 'load_times'[CreationDate] )
+			        )
+			    )
+			RETURN
+			    DIVIDE ( secondPeriod - firstPeriod, firstPeriod ) + 0 * -1
+			
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Trends
+		lineageTag: 16a17f97-d79b-4b45-9398-6a02a9183825
+
+	measure 'P-75 trend' = ```
+			VAR numberOfDays =
+			    DATEDIFF ( MIN ( 'report_views'[CreationDate] ), MAX ( 'report_views'[CreationDate] ), DAY ) + 1
+			VAR periodLength =
+			    INT ( numberOfDays / 2 ) - 1
+			VAR firstPeriod =
+			    CALCULATE (
+			        [P-75],
+			        DATESBETWEEN (
+			            'load_times'[CreationDate],
+			            MIN ( 'load_times'[CreationDate] ),
+			            MIN ( 'load_times'[CreationDate] ) + periodLength
+			        )
+			    )
+			VAR secondPeriod =
+			    CALCULATE (
+			        [P-75],
+			        DATESBETWEEN (
+			            'load_times'[CreationDate],
+			            MAX ( 'load_times'[CreationDate] ) - periodLength,
+			            MAX ( 'load_times'[CreationDate] )
+			        )
+			    )
+			RETURN
+			    DIVIDE ( secondPeriod - firstPeriod, firstPeriod ) + 0 * -1
+			
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Trends
+		lineageTag: 112bbb69-719c-4441-8118-7e9b22a6fc25
+
+	measure 'P-90 trend' = ```
+			VAR numberOfDays =
+			    DATEDIFF ( MIN ( 'report_views'[CreationDate] ), MAX ( 'report_views'[CreationDate] ), DAY ) + 1
+			VAR periodLength =
+			    INT ( numberOfDays / 2 ) - 1
+			VAR firstPeriod =
+			    CALCULATE (
+			        [P-90],
+			        DATESBETWEEN (
+			            'load_times'[CreationDate],
+			            MIN ( 'load_times'[CreationDate] ),
+			            MIN ( 'load_times'[CreationDate] ) + periodLength
+			        )
+			    )
+			VAR secondPeriod =
+			    CALCULATE (
+			        [P-90],
+			        DATESBETWEEN (
+			            'load_times'[CreationDate],
+			            MAX ( 'load_times'[CreationDate] ) - periodLength,
+			            MAX ( 'load_times'[CreationDate] )
+			        )
+			    )
+			RETURN
+			    DIVIDE ( secondPeriod - firstPeriod, firstPeriod ) + 0 * -1
+			
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Trends
+		lineageTag: d59fd7c2-6709-4006-b79a-03f8493595e6
+
+	measure P-50 = ```
+			VAR sop =
+			    CALCULATE ( MIN ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			VAR eop =
+			    CALCULATE ( MAX ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			RETURN
+			    IF (
+			        AND ( MIN ( 'calendar'[Date2Key] ) >= sop, MAX ( 'calendar'[Date2Key] ) <= eop ),
+			        PERCENTILE.INC('load_times'[loadTime], 0.50),
+			        0 //BLANK ()
+			    )
+			
+			
+			```
+		formatString: 0.0
+		displayFolder: Load times
+		lineageTag: d3917b8f-1cf5-4cd8-aed2-195c00f8c5a0
+
+	measure 'P-50 7d' = ```
+			VAR sop =
+			    CALCULATE ( MIN ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			VAR eop =
+			    CALCULATE ( MAX ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			RETURN
+			    IF (
+			        AND ( MIN ( 'calendar'[Date2Key] ) >= sop, MAX ( 'calendar'[Date2Key] ) <= eop ),
+			        CALCULATE (
+			            [P-50],
+			            ALLSELECTED ( 'calendar' ),
+			            DATESINPERIOD (
+			                'load_times'[CreationDate],
+			                MAX ( 'load_times'[CreationDate] ),
+			                -7,
+			                DAY
+			            )
+			        ),
+			        0 //BLANK ()
+			    )
+			
+			
+			```
+		formatString: 0.00
+		displayFolder: Load times
+		lineageTag: fe14be28-b674-46e7-b93b-35c84c7a9387
+
+	measure P-25 = ```
+			VAR sop =
+			    CALCULATE ( MIN ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			VAR eop =
+			    CALCULATE ( MAX ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			RETURN
+			    IF (
+			        AND ( MIN ( 'calendar'[Date2Key] ) >= sop, MAX ( 'calendar'[Date2Key] ) <= eop ),
+			        PERCENTILE.INC('load_times'[loadTime], 0.25),
+			        0 //BLANK ()
+			    )
+			
+			
+			```
+		displayFolder: Load times
+		lineageTag: 003bbfa4-7d28-4526-8a70-fb6d333f644d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure P-10 = ```
+			VAR sop =
+			    CALCULATE ( MIN ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			VAR eop =
+			    CALCULATE ( MAX ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			RETURN
+			    IF (
+			        AND ( MIN ( 'calendar'[Date2Key] ) >= sop, MAX ( 'calendar'[Date2Key] ) <= eop ),
+			        PERCENTILE.INC('load_times'[loadTime], 0.1),
+			        0 //BLANK ()
+			    )
+			
+			
+			```
+		formatString: 0.0
+		displayFolder: Load times
+		lineageTag: 693b8a32-88e0-411d-ba8c-29b5fdddad03
+
+	measure 'P-90 7d' = ```
+			VAR sop =
+			    CALCULATE ( MIN ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			VAR eop =
+			    CALCULATE ( MAX ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			RETURN
+			    IF (
+			        AND ( MIN ( 'calendar'[Date2Key] ) >= sop, MAX ( 'calendar'[Date2Key] ) <= eop ),
+			        CALCULATE (
+			            [P-90],
+			            ALLSELECTED ( 'calendar' ),
+			            DATESINPERIOD (
+			                'load_times'[CreationDate],
+			                MAX ( 'load_times'[CreationDate] ),
+			                -7,
+			                DAY
+			            )
+			        ),
+			        0 //BLANK ()
+			    )
+			
+			
+			```
+		displayFolder: Load times
+		lineageTag: 80dbeff5-3029-459e-952d-92c17fb9625e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'P-10 7d' = ```
+			VAR sop =
+			    CALCULATE ( MIN ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			VAR eop =
+			    CALCULATE ( MAX ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			RETURN
+			    IF (
+			        AND ( MIN ( 'calendar'[Date2Key] ) >= sop, MAX ( 'calendar'[Date2Key] ) <= eop ),
+			        CALCULATE (
+			            [P-10],
+			            ALLSELECTED ( 'calendar' ),
+			            DATESINPERIOD (
+			                'load_times'[CreationDate],
+			                MAX ( 'load_times'[CreationDate] ),
+			                -7,
+			                DAY
+			            )
+			        ),
+			        0 //BLANK ()
+			    )
+			
+			
+			```
+		formatString: 0.0
+		displayFolder: Load times
+		lineageTag: ba206901-e5a4-4959-a9f4-0cd56cbfeb5b
+
+	measure 'P-25 7d' = ```
+			VAR sop =
+			    CALCULATE ( MIN ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			VAR eop =
+			    CALCULATE ( MAX ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			RETURN
+			    IF (
+			        AND ( MIN ( 'calendar'[Date2Key] ) >= sop, MAX ( 'calendar'[Date2Key] ) <= eop ),
+			        CALCULATE (
+			            [P-25],
+			            ALLSELECTED ( 'calendar' ),
+			            DATESINPERIOD (
+			                'load_times'[CreationDate],
+			                MAX ( 'load_times'[CreationDate] ),
+			                -7,
+			                DAY
+			            )
+			        ),
+			        0 //BLANK ()
+			    )
+			
+			
+			```
+		displayFolder: Load times
+		lineageTag: 4f20494f-3e14-4ef6-8245-a7e9baf2cff0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure P-90 = ```
+			VAR sop =
+			    CALCULATE ( MIN ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			VAR eop =
+			    CALCULATE ( MAX ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			RETURN
+			    IF (
+			        AND ( MIN ( 'calendar'[Date2Key] ) >= sop, MAX ( 'calendar'[Date2Key] ) <= eop ),
+			        PERCENTILE.INC('load_times'[loadTime], 0.90),
+			        0 //BLANK ()
+			    )
+			
+			
+			```
+		displayFolder: Load times
+		lineageTag: 7dc9fcb8-ede6-448c-bd13-ab3fdd53374a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure P-75 = ```
+			VAR sop =
+			    CALCULATE ( MIN ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			VAR eop =
+			    CALCULATE ( MAX ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			RETURN
+			    IF (
+			        AND ( MIN ( 'calendar'[Date2Key] ) >= sop, MAX ( 'calendar'[Date2Key] ) <= eop ),
+			        PERCENTILE.INC('load_times'[loadTime], 0.75),
+			        0 //BLANK ()
+			    )
+			
+			
+			```
+		displayFolder: Load times
+		lineageTag: 85ce2724-4cae-4ba5-8899-99770a543b0a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'P-75 7d' = ```
+			VAR sop =
+			    CALCULATE ( MIN ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			VAR eop =
+			    CALCULATE ( MAX ( 'calendar'[Date2Key] ), ALLSELECTED ( 'calendar' ) )
+			RETURN
+			    IF (
+			        AND ( MIN ( 'calendar'[Date2Key] ) >= sop, MAX ( 'calendar'[Date2Key] ) <= eop ),
+			        CALCULATE (
+			            [P-75],
+			            ALLSELECTED ( 'calendar' ),
+			            DATESINPERIOD (
+			                'load_times'[CreationDate],
+			                MAX ( 'load_times'[CreationDate] ),
+			                -7,
+			                DAY
+			            )
+			        ),
+			        0 //BLANK ()
+			    )
+			
+			
+			```
+		displayFolder: Load times
+		lineageTag: f4b3094f-cbc1-4ab1-bee4-f89b2c4321e4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Embedding for your customers' = ```
+			CALCULATE (
+			    [Report views],
+			    'report_views'[OriginalConsumptionMethod] = "Embedding for your customers"
+			) + 0
+			
+			
+			```
+		formatString: 0
+		displayFolder: Embedding
+		lineageTag: be4fcc49-af1e-4c6b-bd48-52918f0e7a35
+
+		changedProperty = FormatString
+
+	measure 'Page views %' = ```
+			COUNT ( 'page_views'[CreationTime] )
+			    / CALCULATE (
+			        COUNT ( 'page_views'[CreationTime] ),
+			        ALLSELECTED ( 'page_views' )
+			    )
+			
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Views
+		lineageTag: 3bc8d995-e131-4763-bf05-53a0c4e5471b
+
+		changedProperty = FormatString
+
+	measure 'Weekly Page Views' = ```
+			VAR sop =
+			    CALCULATE ( MIN ( 'calendar'[Date2key] ), ALLSELECTED ( 'calendar' ), 'calendar'[Day] = 1 )
+			VAR eop =
+			    CALCULATE ( MAX ( 'calendar'[Date2key] ), ALLSELECTED ( 'calendar' ), 'calendar'[Day] = 7 )
+			RETURN
+			    IF (
+			        AND ( MIN ( 'calendar'[Date2key] ) >= sop, MAX ( 'calendar'[Date2key] ) <= eop ),
+			        CALCULATE (
+			            COUNTROWS ( 'page_views' ),
+			            DATESBETWEEN (
+			                'calendar'[Date2key],
+			                MIN ( 'calendar'[StartOfWeekDate] ),
+			                MAX ( 'calendar'[EndOfWeekDate] )
+			            )
+			        ),
+			        BLANK ()
+			    )
+			
+			
+			```
+		formatString: #,0
+		displayFolder: Views
+		lineageTag: b06c53ff-420b-4e61-be65-3720a1dba7f2
+
+	measure 'Page viewers' = ```
+			DISTINCTCOUNT ( 'page_views'[UserId] )
+			
+			
+			```
+		formatString: 0
+		displayFolder: Views
+		lineageTag: 6c6025ba-62fa-499a-b297-6d2b412e113e
+
+		changedProperty = FormatString
+
+	measure LoggedInUser = USERPRINCIPALNAME ()
+		displayFolder: Dynamic subtitles
+		lineageTag: f12aff51-160d-4a4d-92ba-28ff585a6ba8
+
+	measure 'Logged in user filter' = ```
+			
+			"Logged In As: " & [LoggedInUser]
+			
+			```
+		displayFolder: Dynamic subtitles
+		lineageTag: 962f0836-c17b-49bb-93c6-55bd2793aa2a
+
+	measure 'First Report Open' = ```
+			
+			MIN ( 'report_views'[CreationDate] )
+			
+			```
+		formatString: General Date
+		displayFolder: Dynamic subtitles
+		lineageTag: 50cc0111-bf6d-46e4-b22a-ed6197473f5e
+
+	measure 'Last Report Open' = ```
+			
+			MAX ( 'report_views'[CreationDate] )
+			
+			```
+		formatString: General Date
+		displayFolder: Dynamic subtitles
+		lineageTag: a7069e2c-60b6-4ac1-9466-9f4d7c4ccf8b
+
+	measure 'First Page View' = ```
+			
+			MIN ( 'page_views'[CreationDate] )
+			
+			```
+		formatString: General Date
+		displayFolder: Dynamic subtitles
+		lineageTag: 544960b6-4d4d-4cd4-9b4e-263c64abdf61
+
+	measure 'Last Page View' = ```
+			
+			MAX ( 'page_views'[CreationDate] )
+			
+			```
+		formatString: General Date
+		displayFolder: Dynamic subtitles
+		lineageTag: ebe84570-eb04-47f9-b320-fc1c4e0e26dc
+
+	measure 'First Usage' = ```
+			
+			MIN ( [First Page View], [First Report Open] )
+			
+			```
+		formatString: General Date
+		displayFolder: Dynamic subtitles
+		lineageTag: 14ef66eb-9187-4a71-a221-6f1aa3160b27
+
+	measure 'Last Usage' = ```
+			
+			MAX ( [Last Page View], [Last Report Open] )
+			
+			```
+		formatString: General Date
+		displayFolder: Dynamic subtitles
+		lineageTag: 7b858b2a-4fe2-4f1e-b16a-f35160652ab2
+
+	measure 'Usage date filter' = ```
+			
+			"Report usage based on data from " & [First Usage] & " to " & [Last Usage]
+			
+			```
+		displayFolder: Dynamic subtitles
+		lineageTag: a8e3d03a-30d6-46ed-8dae-0feca53d3a90
+
+	measure 'First Performance' =
+			
+			MIN('Calendar'[Date])
+			//MIN ( 'Report Load Times'[Date] )
+		formatString: General Date
+		displayFolder: Dynamic subtitles
+		lineageTag: 96e14ff9-75af-4c8a-b38e-95d777c4f0ef
+
+	measure 'Last Performance' =
+			
+			MAX('Calendar'[Date])
+			//MAX( 'Report Load Times'[Date] )
+		formatString: General Date
+		displayFolder: Dynamic subtitles
+		lineageTag: dd537af5-2d8b-4618-ab9c-0bc8ca03e222
+
+	measure 'Performance date filter' =
+			
+			"Report performance based on data from " & [First Performance] & " to " & [Last Performance]
+		displayFolder: Dynamic subtitles
+		lineageTag: e631b68c-5506-4802-8ac2-0ac2648993c8
+
+	measure 'Workspace filter' = ```
+			VAR NumWorkspace = DISTINCTCOUNT('usage_workspace_reports'[WorkspaceName] )
+			VAR WorkspaceDesc =
+			    IF (
+			        ISFILTERED ('usage_workspace_reports'[WorkspaceName] ),
+			        IF (
+			            NumWorkspace = 1,
+			            VALUES ('usage_workspace_reports'[WorkspaceName] ),
+			            "Multiple" & " (" & NumWorkspace & ")"
+			        ),
+			        "All"
+			    )
+			RETURN
+			    "Workspace: " & WorkspaceDesc
+			
+			
+			```
+		displayFolder: Dynamic subtitles
+		lineageTag: c5f7e367-615b-4341-9b11-a5c69c2b38a0
+
+	measure 'Typical report opening interval' = ```
+			IF (
+			    ISBLANK ( MAX ( 'load_times'[loadTime] ) ),
+			    "This report has no performance measurements.",
+			    IF (
+			        HASONEVALUE ( 'load_times'[loadTime] ),
+			        "This report only has a single performance measurement. The load time was "
+			            & MAX ( 'load_times'[loadTime] ) & " seconds.",
+			        IF (
+			            [P-10] = [P-50] = [P-25],
+			            "Across all measurements, this report loaded in  "
+			                & MAX ( 'load_times'[loadTime] ) & " seconds.",
+			            "For most of the users your report opens within " & INT ( [P-10 7d] ) & " and "
+			                & INT ( [P-90 7d] ) & " seconds."
+			        )
+			    )
+			)
+			
+			
+			```
+		displayFolder: Display strings
+		lineageTag: 63e21117-2c5c-47ee-86cf-4161cefff114
+
+	measure 'Rank string' = ```
+			IF (
+			    HASONEVALUE ( 'usage_reports'[ReportId] ),
+			    IF (
+			        ISBLANK ( MAX ( 'usage_rank'[ReportRank] ) ),
+			        "Select a single report to display the rank here",
+			        "Rank " & MAX ( 'usage_rank'[ReportRank] ) & " across " & [Total Org Report Count] & " reports in the organization"
+			    ),
+			    "Select a single report to display the rank here"
+			)
+			
+			
+			```
+		displayFolder: Display strings
+		lineageTag: 14033dc3-c2b6-4275-bd74-18baf8046579
+
+	measure 'Typical report opening time' = ```
+			
+			[P-50] & " sec"
+			
+			```
+		displayFolder: Display strings
+		lineageTag: a7b6b086-a459-4675-97d7-3471d9ecd40a
+
+	measure 'Covered time display string' = ```
+			IF (
+			    ISBLANK ( MAX ( 'report_views'[CreationDate] ) ),
+			    "No usage data",
+			    "Report usage based on data from "
+			        & DATE ( YEAR ( MIN ( 'report_views'[CreationDate] ) ), MONTH ( MIN ( 'report_views'[CreationDate] ) ), DAY ( MIN ( 'report_views'[CreationDate] ) ) ) & " to "
+			        & DATE ( YEAR ( MAX ( 'report_views'[CreationDate] ) ), MONTH ( MAX ( 'report_views'[CreationDate] ) ), DAY ( MAX ( 'report_views'[CreationDate] ) ) )
+			)
+			
+			
+			```
+		displayFolder: Display strings
+		lineageTag: 56959bf7-0344-45ac-b6ce-b37da1af1f0a
+
+	measure '_Last refresh time display string' =
+			"TBD"
+			/*
+			IF (
+			    ISBLANK ( MAX ( 'Refresh Stats'[Last Refresh] ) ),
+			    "Usage data has not been imported yet. Check the refresh history and data source credentials in the Usage Metrics Report dataset settings.",
+			    IF (
+			        DATEVALUE ( MAX ( 'Refresh Stats'[Last Refresh] ) ) < DATE ( 2019, 11, 20 ),
+			        "Usage data has not been imported yet. Check the refresh history and data source credentials in the Usage Metrics Report dataset settings.",
+			        IF (
+			            DATEDIFF ( MAX ( 'Refresh Stats'[Last Refresh] ), TODAY (), DAY ) > 4,
+			            "The usage data is outdated. Check the refresh history and data source credentials in the Usage Metrics Report dataset settings.",
+			            "Dataset last refreshed: " & MAX ( 'Refresh Stats'[Last Refresh] ) & " (UTC)"
+			        )
+			    )
+			)
+			*/
+		displayFolder: Display strings
+		lineageTag: ae38ae7c-6a16-41db-a471-c65f8ec8a8ad
+
+	measure 'Report title' = ```
+			"Usage Metrics"
+			    & IF (
+			        HASONEVALUE ( 'usage_reports'[ReportId] ),
+			        ": " & MAX ( 'usage_reports'[ReportName] ),
+			        " (Multiple reports selected)"
+			    )
+			
+			
+			```
+		displayFolder: Display strings
+		lineageTag: fabe34fb-1ec7-4851-a698-b14ffc5bd618
+
+	measure 'Report Id' = ```
+			IF (
+			    HASONEVALUE ( 'usage_reports'[ReportId] ),
+			    MAX ( 'usage_reports'[ReportId] ),
+			    IF (
+			        DISTINCTCOUNT ( 'usage_reports'[ReportId] ) = 0,
+			        "No reports selected",
+			        "Multiple reports selected"
+			    )
+			)
+			
+			
+			```
+		displayFolder: Display strings
+		lineageTag: 28ab9389-4b5d-47b6-af39-e3e6cc862712
+
+	measure 'Covered perf time display string' = ```
+			IF (
+			    ISBLANK ( MAX ( 'load_times'[CreationDate]) ),
+			    "No open report performance data",
+			    "Report performance based on data from "
+			        & DATE ( YEAR ( MIN ( 'load_times'[CreationDate]) ), MONTH ( MIN ( 'load_times'[CreationDate]) ), DAY ( MIN ( 'load_times'[CreationDate]) ) ) & " to "
+			        & DATE ( YEAR ( MAX ( 'load_times'[CreationDate]) ), MONTH ( MAX ( 'load_times'[CreationDate]) ), DAY ( MAX ( 'load_times'[CreationDate]) ) )
+			)
+			
+			
+			```
+		displayFolder: Display strings
+		lineageTag: b7b71528-e4e3-45ea-b49c-dd360993190d
+
+	measure 'Total Org Report Count' = ```
+			IF (
+			    COUNTROWS ( 'usage_rank' ) = 0,
+			    0,
+			    FIRSTNONBLANK ( 'usage_rank'[TotalReportCount], 0 )
+			)
+			
+			
+			```
+		formatString: 0
+		displayFolder: Display strings
+		lineageTag: 717f7a88-a678-496a-bbbe-8b226f14761f
+
+	/// Total number of unique viewers of all reports in the workspace
+	measure 'Workspace report viewers' = ```
+			DISTINCTCOUNT('usage_workspace_views'[UserKey]) + 0
+			
+			
+			```
+		formatString: #,0
+		displayFolder: Workspace
+		lineageTag: 27139e3e-0563-4a05-ade9-d59e31a2e058
+
+	measure 'Workspace inactive reports' = ```
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( 'usage_workspace_reports'[ReportId] ),
+			    'usage_workspace_reports'[Dayswithusage] = 0
+			) + 0
+			
+			```
+		formatString: 0
+		displayFolder: Workspace
+		lineageTag: a255a29f-9516-4642-b622-b6eb274f62e0
+
+		changedProperty = FormatString
+
+	measure 'Workspace views' = ```
+			SUM('usage_workspace_views'[Views]) + 0
+			
+			
+			```
+		formatString: #,0
+		displayFolder: Workspace
+		lineageTag: 7065f65e-2219-4004-aa63-e2c46a9d0518
+
+	measure 'Workspace active days per report' = DISTINCTCOUNT('report_views'[Date]) + 0
+		formatString: 0
+		displayFolder: Workspace
+		lineageTag: 3c8c5e84-0cb9-43be-b470-a64b692c4740
+
+		changedProperty = FormatString
+
+	measure 'Workspace reports' = ```
+			DISTINCTCOUNT('report_views'[ReportId])
+			
+			
+			```
+		formatString: 0
+		displayFolder: Workspace
+		lineageTag: 325d50d3-3ff9-4642-8fc8-ca4fae98a4dc
+
+		changedProperty = FormatString
+
+	/// Number of reports with views in the last 30 days
+	measure 'Workspace active reports' = DISTINCTCOUNT('usage_workspace_views'[ReportId]) + 0
+		formatString: 0
+		displayFolder: Workspace
+		lineageTag: 6e061bf1-b230-41cf-988f-22bfce128b6c
+
+		changedProperty = FormatString
+
+	measure 'Workspace report view %' = ```
+			// [GJC] Changed ALL to ALLSELECTED since the Microsoft std. report is limited to a single workspace
+			DIVIDE (
+			    [Workspace views],
+			    CALCULATE ( [Workspace views], ALLSELECTED ( 'usage_workspace_views' ) )
+			)
+			
+			
+			```
+		formatString: 0%;-0%;0%
+		displayFolder: Workspace
+		lineageTag: d8c16561-f2e2-4344-91f1-8fa52b53dd21
+
+	measure 'Workspace view trend' = ```
+			VAR startDate =
+			    CALCULATE ( MIN ( 'report_views'[CreationDate] ), ALLSELECTED ( 'report_views' ) )
+			VAR endDate =
+			    CALCULATE ( MAX ( 'report_views'[CreationDate] ), ALLSELECTED ( 'report_views' ) )
+			VAR numberOfDays =
+			    DATEDIFF ( startDate, endDate, DAY ) + 1
+			VAR periodLength =
+			    INT ( numberOfDays / 2 ) - 1
+			VAR middleDate1 =
+			    CALCULATE (
+			        LASTDATE (
+			            DATESBETWEEN ( 'report_views'[CreationDate], startDate, startDate + periodLength )
+			        ),
+			        ALLSELECTED ( 'report_views' )
+			    )
+			VAR middleDate2 = middleDate1 + 1
+			VAR firstPeriod =
+			    CALCULATE (
+			        COUNTX ( 'report_views', [Report Id] ) + 0,
+			        DATESBETWEEN ( 'report_views'[CreationDate], startDate, middleDate1 )
+			    )
+			VAR secondPeriod =
+			    CALCULATE (
+			        COUNTX ( 'report_views', [Report Id] ) + 0,
+			        DATESBETWEEN ( 'report_views'[CreationDate], middleDate2, endDate )
+			    )
+			RETURN
+			    // startDate & "  " & middleDate1 & " " & middleDate2 & "  " & endDate & " " & numberOfDays & ", " & periodLength & ": " & firstPeriod & "  " & secondPeriod
+			    DIVIDE ( secondPeriod - firstPeriod, firstPeriod, 0 )
+			
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Workspace
+		lineageTag: 261157b6-274f-4a43-8aa8-a09e9319a880
+
+		changedProperty = FormatString
+
+	measure 'Workspace report days with usage' = ```
+			SUM('usage_workspace_reports'[Dayswithusage]) + 0
+			
+			
+			```
+		formatString: 0
+		displayFolder: Workspace
+		lineageTag: 50457338-2b1c-49fa-9238-07bab875a1c8
+
+		changedProperty = FormatString
+
+	measure 'Workspace viewed reports' = ```
+			DISTINCTCOUNT('usage_workspace_views'[ReportId]) + 0
+			
+			
+			```
+		formatString: 0
+		displayFolder: Workspace
+		lineageTag: 671589e2-4738-438d-abbd-3d044845488a
+
+		changedProperty = FormatString
+
+	measure '# Workspaces' = DISTINCTCOUNT( 'usage_workspaces'[WorkspaceId] )
+		formatString: #,0
+		displayFolder: Workspace
+		lineageTag: 38156c66-7832-4c2e-8ed2-b2478b573fe3
+
+	measure 'Internal domain' = "ffi-services.com"
+		displayFolder: Display strings
+		lineageTag: dd617ad1-97b0-46db-a6af-0a4a3df475fc
+
+	measure 'FUAM Release' = "FUAM Release 2025.4.1 (Ext)"
+		displayFolder: Display strings
+		lineageTag: d12bf75d-77a8-4861-8118-da95d3dad457
+
+	partition Metrics = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

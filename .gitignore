@@ -1,0 +1,8 @@
+.DS_Store
+**/.DS_Store
+**/.pbi/localSettings.json
+**/.pbi/editorSettings.json
+**/.pbi/cache.abf
+**/.platform
+*.config.json
+*-workspace

@@ -1,0 +1,182 @@
+table report_views
+	lineageTag: 5af187b4-d51f-4000-8489-16d120e21381
+
+	column UsageDatasetId
+		dataType: string
+		lineageTag: 936a41f5-8ad1-4326-a66d-45ca614ae737
+		summarizeBy: none
+		sourceColumn: UsageDatasetId
+
+		annotation SummarizationSetBy = Automatic
+
+	column AppName
+		dataType: string
+		lineageTag: b60cc57b-731d-4992-9766-78bfc9a971ca
+		summarizeBy: none
+		sourceColumn: AppName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CapacityId
+		dataType: string
+		lineageTag: f4d885c3-7188-41d7-9037-cea8696498dc
+		summarizeBy: none
+		sourceColumn: CapacityId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CapacityName
+		dataType: string
+		lineageTag: 91ae9529-e3ca-4f24-82b2-38e5b19fcd82
+		summarizeBy: none
+		sourceColumn: CapacityName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConsumptionMethod
+		dataType: string
+		lineageTag: 295017b5-105c-451d-bca2-8e57a52b6d0d
+		summarizeBy: none
+		sourceColumn: ConsumptionMethod
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreationTime
+		dataType: string
+		lineageTag: 184a6aa8-a8f6-4abf-b8e7-3db9421ac847
+		summarizeBy: none
+		sourceColumn: CreationTime
+
+		annotation SummarizationSetBy = Automatic
+
+	column DatasetName
+		dataType: string
+		lineageTag: 9b682a81-f993-45e5-b26b-673c0c8dac41
+		summarizeBy: none
+		sourceColumn: DatasetName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: string
+		lineageTag: 1fb0375e-c71f-4079-8160-4df65b2be4ef
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column DistributionMethod
+		dataType: string
+		lineageTag: cab78917-eea1-4be1-987a-337c816eb003
+		summarizeBy: none
+		sourceColumn: DistributionMethod
+
+		annotation SummarizationSetBy = Automatic
+
+	column OriginalConsumptionMethod
+		dataType: string
+		lineageTag: fec287b0-f3c1-4836-bdde-2661374f297e
+		summarizeBy: none
+		sourceColumn: OriginalConsumptionMethod
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportId
+		dataType: string
+		lineageTag: bfda1db9-d32d-473e-b6fc-1a1a8086c6eb
+		summarizeBy: none
+		sourceColumn: ReportId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportName
+		dataType: string
+		lineageTag: 93fe963b-d8e3-4554-8ff8-2288b6ba9d58
+		summarizeBy: none
+		sourceColumn: ReportName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportType
+		dataType: string
+		lineageTag: 77fc7f84-4159-4fb1-a0b5-08532aadbc5c
+		summarizeBy: none
+		sourceColumn: ReportType
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserAgent
+		dataType: string
+		lineageTag: 2ddf3293-875e-447f-98ec-d5f38002f7a9
+		summarizeBy: none
+		sourceColumn: UserAgent
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserId
+		dataType: string
+		lineageTag: 3ee307ec-bf28-47c5-9dec-2ad5dcf4cc2c
+		summarizeBy: none
+		sourceColumn: UserId
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserKey
+		dataType: string
+		lineageTag: 2830421f-55b0-4f5f-b9d6-e7aac2324e15
+		summarizeBy: none
+		sourceColumn: UserKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreationDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 36189737-d28e-47f6-92fc-558b5f5e89ae
+		summarizeBy: none
+		sourceColumn: CreationDate
+
+		variation Variation
+			isDefault
+			relationship: 0578fa14-16de-4be9-976d-ffdb525210ce
+			defaultHierarchy: LocalDateTable_147cfb4d-5801-403c-954c-b65da9f5e892.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CreationDateKey
+		dataType: string
+		lineageTag: 1056f319-af8d-42a3-b1de-88c06c301bdf
+		summarizeBy: none
+		sourceColumn: CreationDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreationHour
+		dataType: string
+		lineageTag: 75d11bc0-e827-428a-bd2d-24570fe10a1a
+		summarizeBy: none
+		sourceColumn: CreationHour
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreationMinute
+		dataType: string
+		lineageTag: a219e691-d963-4331-b753-58bfdce68471
+		summarizeBy: none
+		sourceColumn: CreationMinute
+
+		annotation SummarizationSetBy = Automatic
+
+	partition report_views = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("znbjxinpfs5u3cxz7s7bppllcq-4kbsyv3a5r4ulfsicaruwsrq2e.datawarehouse.fabric.microsoft.com", "FUAM_Ext_Lakehouse"),
+				    dbo_report_views = Source{[Schema="dbo",Item="report_views"]}[Data]
+				in
+				    dbo_report_views
+
+	annotation PBI_ResultType = Table
+
