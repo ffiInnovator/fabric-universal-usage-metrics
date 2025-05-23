@@ -575,16 +575,6 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.476
 			          }
-			        },
-			        {
-			          "Page": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
 			        }
 			      ]
 			    },
@@ -5712,16 +5702,6 @@ cultureInfo en-US
 			              "Agent": "Thesaurus"
 			            },
 			            "Weight": 0.485
-			          }
-			        },
-			        {
-			          "Product": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
 			          }
 			        }
 			      ]
@@ -13674,16 +13654,6 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.582
 			          }
-			        },
-			        {
-			          "Report opens": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
 			        }
 			      ]
 			    },
@@ -19026,7 +18996,9 @@ cultureInfo en-US
 			      },
 			      "State": "Generated",
 			      "Terms": [
-			        {},
+			        {
+			          "": {}
+			        },
 			        {
 			          "province": {
 			            "Type": "Noun",
