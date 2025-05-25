@@ -1,0 +1,42 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["usage_pages","usage_rank","usage_reports","usage_users","usage_workspace_reports","usage_workspace_views","report_views","page_views","load_times","Metrics","calendar","usage_workspaces","users"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.143.878.0 (25.05)+b20aa3b866ec1b70879135a4e60e4b1301c75b21
+
+annotation PBI_ProTooling = ["WebModelingEdit","DaxQueryView_Desktop","DevMode"]
+
+annotation __TEdtr = 1
+
+ref table usage_pages
+ref table usage_rank
+ref table usage_reports
+ref table usage_users
+ref table usage_workspace_reports
+ref table usage_workspace_views
+ref table report_views
+ref table DateTableTemplate_c50bc2e3-7ed9-49c0-868e-74d6b11fdcd3
+ref table LocalDateTable_147cfb4d-5801-403c-954c-b65da9f5e892
+ref table page_views
+ref table LocalDateTable_ebaa93a3-58ad-42f5-bc0b-854b66549c9b
+ref table load_times
+ref table LocalDateTable_1b3b88f0-055e-40bb-a445-9e7a3ccee909
+ref table Metrics
+ref table calendar
+ref table LocalDateTable_6ffb6192-3469-4d58-93c9-e36a9fa85d25
+ref table LocalDateTable_1cd2e90a-a0ff-4402-82aa-1203411dcc83
+ref table LocalDateTable_296bce1f-642d-4877-bb83-285a3b925990
+ref table usage_workspaces
+ref table LocalDateTable_18b1157c-f023-4e78-b9c9-6a5d48ef24cc
+ref table users
+
+ref cultureInfo en-US
+

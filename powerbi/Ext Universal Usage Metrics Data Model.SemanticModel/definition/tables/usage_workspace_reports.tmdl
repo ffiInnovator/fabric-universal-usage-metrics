@@ -1,0 +1,72 @@
+table usage_workspace_reports
+	lineageTag: 50052f31-224c-443a-a0ec-5c5f15c82772
+
+	column UsageDatasetId
+		dataType: string
+		lineageTag: 8df95007-48ee-47b1-882d-c50296385212
+		summarizeBy: none
+		sourceColumn: UsageDatasetId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Dayswithusage
+		dataType: int64
+		formatString: 0
+		lineageTag: e5b2cb48-915d-4da1-952f-9feac82b07fa
+		summarizeBy: sum
+		sourceColumn: Dayswithusage
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsUsageMetricsReportWS
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: d588f420-6315-4627-9f5f-c2079ccc10d7
+		summarizeBy: none
+		sourceColumn: IsUsageMetricsReportWS
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportId
+		dataType: string
+		lineageTag: 3eaf8882-4f91-461e-a7ef-88b424f112de
+		summarizeBy: none
+		sourceColumn: ReportId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportName
+		dataType: string
+		lineageTag: 3b490621-4158-43bd-9b02-55045a7dc180
+		summarizeBy: none
+		sourceColumn: ReportName
+
+		annotation SummarizationSetBy = Automatic
+
+	column trend
+		dataType: double
+		lineageTag: 34362a6e-9a4a-43e0-89f8-1d1b71a9fa65
+		summarizeBy: sum
+		sourceColumn: trend
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WorkspaceName = LOOKUPVALUE( 'usage_reports'[WorkspaceName], 'usage_reports'[ReportId], 'usage_workspace_reports'[ReportId] )
+		lineageTag: 6c3e5119-1014-425f-b49d-9a16e8af8929
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition usage_workspace_reports = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("znbjxinpfs5u3cxz7s7bppllcq-4kbsyv3a5r4ulfsicaruwsrq2e.datawarehouse.fabric.microsoft.com", "FUAM_Ext_Lakehouse"),
+				    dbo_usage_workspace_reports = Source{[Schema="dbo",Item="usage_workspace_reports"]}[Data]
+				in
+				    dbo_usage_workspace_reports
+
+	annotation PBI_ResultType = Table
+

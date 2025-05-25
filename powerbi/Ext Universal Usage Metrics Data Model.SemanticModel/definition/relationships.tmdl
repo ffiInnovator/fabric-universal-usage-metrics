@@ -1,0 +1,101 @@
+relationship 0578fa14-16de-4be9-976d-ffdb525210ce
+	joinOnDateBehavior: datePartOnly
+	fromColumn: report_views.CreationDate
+	toColumn: LocalDateTable_147cfb4d-5801-403c-954c-b65da9f5e892.Date
+
+relationship 21e24bcf-eb19-4a4f-8b53-811553c473e5
+	joinOnDateBehavior: datePartOnly
+	fromColumn: page_views.CreationDate
+	toColumn: LocalDateTable_ebaa93a3-58ad-42f5-bc0b-854b66549c9b.Date
+
+relationship c44880e4-057b-43d9-ab7d-256e00879ea2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: load_times.CreationDate
+	toColumn: LocalDateTable_1b3b88f0-055e-40bb-a445-9e7a3ccee909.Date
+
+relationship AutoDetected_d4a697f1-89b9-46a8-b38c-ca402778f25f
+	fromColumn: usage_workspace_views.UsageDatasetId
+	toColumn: usage_users.UsageDatasetId
+
+relationship AutoDetected_92d0bebc-52c6-42c2-9861-59da3bb0d4e2
+	fromColumn: report_views.UsageDatasetId
+	toColumn: usage_users.UsageDatasetId
+
+relationship AutoDetected_eb21c3b5-df4f-4f58-b142-a9f5e6947b93
+	fromColumn: page_views.UsageDatasetId
+	toColumn: usage_users.UsageDatasetId
+
+relationship AutoDetected_3eadcffe-e5de-41fb-b2ff-72f856a12435
+	fromColumn: load_times.UsageDatasetId
+	toColumn: usage_users.UsageDatasetId
+
+relationship AutoDetected_463095bb-a645-41ad-b154-f8a30f681bb9
+	fromColumn: usage_pages.ReportId
+	toColumn: usage_reports.ReportId
+
+relationship AutoDetected_bee21386-8710-4c80-9834-4957cee6a44b
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: usage_rank.ReportId
+	toColumn: usage_reports.ReportId
+
+relationship AutoDetected_53970253-db7e-45d8-a7a0-6d1748b505f4
+	fromColumn: report_views.ReportId
+	toColumn: usage_reports.ReportId
+
+relationship AutoDetected_56396948-0053-4ed4-a209-22ae30bd4962
+	fromColumn: load_times.ReportId
+	toColumn: usage_reports.ReportId
+
+relationship AutoDetected_3b2e909e-3fc7-4dbf-a9d7-076dc164a276
+	fromColumn: page_views.SectionId
+	toColumn: usage_pages.SectionId
+
+relationship 708343f7-0a4a-a9aa-7483-41d57b2cbf2b
+	fromColumn: usage_workspace_views.ReportId
+	toColumn: usage_workspace_reports.ReportId
+
+relationship c59a0fea-f1c7-4c2d-986e-1d9cc34c679e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: calendar.Date2Key
+	toColumn: LocalDateTable_6ffb6192-3469-4d58-93c9-e36a9fa85d25.Date
+
+relationship b1eaf26f-900a-936f-b1e3-94fe8ac22bc0
+	fromColumn: page_views.CreationDateKey
+	toColumn: calendar.DateKey
+
+relationship 81e80d46-7491-6c30-650a-035b7781b2bb
+	fromColumn: report_views.CreationDateKey
+	toColumn: calendar.DateKey
+
+relationship b9c39dd2-1fd6-df8c-2f9c-0b153c267b5f
+	fromColumn: load_times.CreationDateKey
+	toColumn: calendar.DateKey
+
+relationship 95996c74-97be-47c8-a066-efc3261367d0
+	joinOnDateBehavior: datePartOnly
+	fromColumn: calendar.EndOfWeekDate
+	toColumn: LocalDateTable_1cd2e90a-a0ff-4402-82aa-1203411dcc83.Date
+
+relationship 954ff9f2-bb73-41e3-9337-e0d271903ed6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: calendar.StartOfWeekDate
+	toColumn: LocalDateTable_296bce1f-642d-4877-bb83-285a3b925990.Date
+
+relationship 9127a6fd-4890-e48e-529a-904d705ac68e
+	fromColumn: report_views.ReportId
+	toColumn: usage_workspace_reports.ReportId
+
+relationship 5565a79c-a265-43bd-8783-aaa67e6c33af
+	joinOnDateBehavior: datePartOnly
+	fromColumn: usage_workspaces.fuam_modified_at
+	toColumn: LocalDateTable_18b1157c-f023-4e78-b9c9-6a5d48ef24cc.Date
+
+relationship AutoDetected_fbe2efb1-efa0-4216-bc78-9d2b0a0c8192
+	fromColumn: usage_reports.WorkspaceId
+	toColumn: usage_workspaces.WorkspaceId
+
+relationship 1d65d0c5-22ed-f5ca-9366-b15f5ee735a7
+	fromColumn: usage_users.UniqueUser
+	toColumn: users.UserPrincipalName
+

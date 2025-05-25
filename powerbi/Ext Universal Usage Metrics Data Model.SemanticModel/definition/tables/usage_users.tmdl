@@ -1,0 +1,54 @@
+table usage_users
+	lineageTag: b0284a9f-ed33-4225-a377-dc12045688b9
+
+	column UsageDatasetId
+		dataType: string
+		lineageTag: 776c78a9-d6e7-4d7f-a7a7-62d741fc8184
+		summarizeBy: none
+		sourceColumn: UsageDatasetId
+
+		annotation SummarizationSetBy = Automatic
+
+	column UniqueUser
+		dataType: string
+		lineageTag: c82488c3-77e1-4f8e-b0d9-52b08911b00a
+		summarizeBy: none
+		sourceColumn: UniqueUser
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserGuid
+		dataType: string
+		lineageTag: 881058fc-ecfa-4d96-af28-66eebaae3528
+		summarizeBy: none
+		sourceColumn: UserGuid
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserId
+		dataType: string
+		lineageTag: fa5d7024-f581-48b4-b43a-c3d4be5e63f7
+		summarizeBy: none
+		sourceColumn: UserId
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserKey
+		dataType: string
+		lineageTag: 46f5e6e3-b488-4e58-8d36-eac79f83f518
+		summarizeBy: none
+		sourceColumn: UserKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition usage_users = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("znbjxinpfs5u3cxz7s7bppllcq-4kbsyv3a5r4ulfsicaruwsrq2e.datawarehouse.fabric.microsoft.com", "FUAM_Ext_Lakehouse"),
+				    dbo_usage_users = Source{[Schema="dbo",Item="usage_users"]}[Data]
+				in
+				    dbo_usage_users
+
+	annotation PBI_ResultType = Table
+

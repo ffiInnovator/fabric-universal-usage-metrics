@@ -1,0 +1,86 @@
+table users
+	lineageTag: fae29be5-ee90-48f6-aa6a-9ce0970ed133
+
+	column UserId
+		dataType: string
+		lineageTag: ea89bf06-7b32-4ca1-97d4-3a37e098c336
+		summarizeBy: none
+		sourceColumn: UserId
+
+		annotation SummarizationSetBy = Automatic
+
+	column DisplayName
+		dataType: string
+		lineageTag: aea60fb4-b453-4938-b0b1-eeebc7bbca5a
+		summarizeBy: none
+		sourceColumn: DisplayName
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserPrincipalName
+		dataType: string
+		lineageTag: 33e90c40-5ea9-4bd0-8cfc-cd3395de58cf
+		summarizeBy: none
+		sourceColumn: UserPrincipalName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mail
+		dataType: string
+		lineageTag: 7ebb2a27-8e21-4609-9b4c-2f555cd79960
+		summarizeBy: none
+		sourceColumn: Mail
+
+		annotation SummarizationSetBy = Automatic
+
+	column GivenName
+		dataType: string
+		lineageTag: 00004a58-f876-4100-9269-05b770290c4c
+		summarizeBy: none
+		sourceColumn: GivenName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Surname
+		dataType: string
+		lineageTag: f675e815-af37-4243-ab32-c21146d84772
+		summarizeBy: none
+		sourceColumn: Surname
+
+		annotation SummarizationSetBy = Automatic
+
+	column OfficeLocation
+		dataType: string
+		lineageTag: f2ff6a41-1475-49b8-a0ce-7c035572000d
+		summarizeBy: none
+		sourceColumn: OfficeLocation
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserType =
+			
+			VAR Email = [Mail]
+			VAR AtPosition = FIND("@", Email, 1, -1)
+			VAR Domain = IF(AtPosition > 0, MID(Email, AtPosition + 1, LEN(Email)), "")
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    AtPosition = -1, "Invalid",
+			    Domain = [Internal domain], "Internal",
+			    ISERROR(FIND(".", Domain, 1)), "Invalid",
+			    "External"
+			)
+		lineageTag: fc7668d7-7049-46cb-954c-960ea7a9f860
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition users = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("znbjxinpfs5u3cxz7s7bppllcq-4kbsyv3a5r4ulfsicaruwsrq2e.datawarehouse.fabric.microsoft.com", "FUAM_Ext_Lakehouse"),
+				    dbo_users = Source{[Schema="dbo",Item="users"]}[Data]
+				in
+				    dbo_users
+

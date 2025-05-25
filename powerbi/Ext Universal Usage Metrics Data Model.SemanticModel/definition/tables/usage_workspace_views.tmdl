@@ -1,0 +1,79 @@
+table usage_workspace_views
+	lineageTag: d3782a46-30ef-4aae-8374-2b40464c2d23
+
+	column UsageDatasetId
+		dataType: string
+		lineageTag: 5e02c9ae-ce62-4c3c-a527-01ad2cdccb3e
+		summarizeBy: none
+		sourceColumn: UsageDatasetId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConsumptionMethod
+		dataType: string
+		lineageTag: f2723553-cd6c-47eb-8c0a-f1858bb83548
+		summarizeBy: none
+		sourceColumn: ConsumptionMethod
+
+		annotation SummarizationSetBy = Automatic
+
+	column DistributionMethod
+		dataType: string
+		lineageTag: 9231a850-e51d-4316-9775-0c8ddbc1e236
+		summarizeBy: none
+		sourceColumn: DistributionMethod
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportId
+		dataType: string
+		lineageTag: e7e60031-d6dc-4166-8b57-c9e5c85fc1ad
+		summarizeBy: none
+		sourceColumn: ReportId
+
+		annotation SummarizationSetBy = Automatic
+
+	column UniqueUser
+		dataType: string
+		lineageTag: cbb37006-c2b5-4871-9d61-1024b319d16e
+		summarizeBy: none
+		sourceColumn: UniqueUser
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserId
+		dataType: string
+		lineageTag: a5ebded5-bbe6-4963-a1f9-2ad23f45be47
+		summarizeBy: none
+		sourceColumn: UserId
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserKey
+		dataType: string
+		lineageTag: b2858960-6e5c-4416-96e7-2823c9cd6c49
+		summarizeBy: none
+		sourceColumn: UserKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Views
+		dataType: int64
+		formatString: 0
+		lineageTag: 599c5b28-6637-4bc9-b813-86a1388201bc
+		summarizeBy: sum
+		sourceColumn: Views
+
+		annotation SummarizationSetBy = Automatic
+
+	partition usage_workspace_views = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("znbjxinpfs5u3cxz7s7bppllcq-4kbsyv3a5r4ulfsicaruwsrq2e.datawarehouse.fabric.microsoft.com", "FUAM_Ext_Lakehouse"),
+				    dbo_usage_workspace_views = Source{[Schema="dbo",Item="usage_workspace_views"]}[Data]
+				in
+				    dbo_usage_workspace_views
+
+	annotation PBI_ResultType = Table
+
