@@ -77,7 +77,7 @@ The UUM solution is powered by **Microsoft Fabric** and includes **key technolog
 
 
 ## **UUM Architecture: Data Flows**
-UUM leverages the ![Microsoft Usage Metrics Report](https://learn.microsoft.com/en-us/power-bi/collaborate-share/service-modern-usage-metrics) semantic model that is created by the service in each workspace when the `View usage metrics report` function on the pop-up context menu for any report artifact is selected. The model contains usage data for the last 30 days, and Power BI then refreshes this semantic model daily. UUM provides several advantages over the default solution from Microsoft:
+UUM leverages the [Microsoft Usage Metrics Report](https://learn.microsoft.com/en-us/power-bi/collaborate-share/service-modern-usage-metrics) semantic model that is created by the service in each workspace when the `View usage metrics report` function on the pop-up context menu for any report artifact is selected. The model contains usage data for the last 30 days, and Power BI then refreshes this semantic model daily. UUM provides several advantages over the default solution from Microsoft:
 - A **data persistence framework** implented using a **Microsoft Fabric Lakehouse** stores usage statistics for years, not days, allowing for deeper analysis.
 - Enables integration with with the organization's HR system, which adds user-friendly names (not IDs), business areas, departments, job roles and other dimensions to filter and analyze reporting trends.
 - Improved branding and user experience, supporting multiple usage reports in a single interface, across multiple workspaces.
