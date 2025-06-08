@@ -1,6 +1,9 @@
-# Microsoft Fabric Universal Usage Metrics
+# Microsoft Fabric Universal Usage Metrics (UUM)
 
-A robust data model and data engineering project designed to solve a key reporting challenge in Microsoft Fabric: the lack of a unified view for report usage metrics. By addressing this gap, the solution provides a centralized analytics platform that streamlines data visibility for decision-makers.
+A robust data model and data engineering project designed to solve a key reporting challenge in Microsoft Fabric: the lack of a unified view for report usage metrics. By addressing this gap, the solution provides a centralized analytics platform that streamlines data visibility for decision-makers. UUM provides insights that can help drive adoption and improvements in your Power BI reports, providing measures that answer questions like:
+- Who is viewing my report, how often, and from web or mobile?
+- What are the most (and least) popular pages, and is usage trending up or down?
+- Is the performance of my report good or bad?
 
 ![UUM App](resources/uum-ui-report-usage.png "The Universal Usage Metrics Application")
 **Fabric Universal Usage Metrics -- Report Usage Across all Workspaces**
@@ -71,6 +74,28 @@ The UUM solution is powered by **Microsoft Fabric** and includes **key technolog
 - **Partitioning Strategies** – Reduced query latency by **partitioning usage data**, ensuring scalable retrieval.
 - **Incremental Data Loads** – Minimized processing time 🚀 by **only updating new records** instead of full dataset refreshes.
 - **Metadata Inspection & Dynamic Querying** – Leverags **Fabric pipeline expressions** to dynamically construct API requests, ensuring **efficient data retrieval**.
+
+
+## **UUM Architecture: Data Flows**
+UUM leverages the ![Microsoft Usage Metrics Report](https://learn.microsoft.com/en-us/power-bi/collaborate-share/service-modern-usage-metrics) semantic model that is created by the service in each workspace when the `View usage metrics report` function on the pop-up context menu for any report artifact is selected. The model contains usage data for the last 30 days, and Power BI then refreshes this semantic model daily. UUM provides several advantages over the default solution from Microsoft:
+- A **data persistence framework** implented using a **Microsoft Fabric Lakehouse** stores usage statistics for years, not days, allowing for deeper analysis.
+- Enables integration with with the organization's HR system, which adds user-friendly names (not IDs), business areas, departments, job roles and other dimensions to filter and analyze reporting trends.
+- Improved branding and user experience, supporting multiple usage reports in a single interface, across multiple workspaces.
+
+Implementation of the framework starts with a **Microsoft Fabric Data pipeline** that calls the API to get the complete catalog of Usage Metric Report semantic model IDs, across all workspaces in the entire tenant, then storing them in the Lakehouse.
+
+![UUM Workspace Usage Datasets](resources/uum-pipeline-get-workspace-datasets.png "The Universal Usage Metrics Get Workspace Usage Datasets Flow")
+**Fabric Universal Usage Metrics -- Data Model Workspace Flow**
+
+These IDs are the input to another **Microsoft Fabric Data pipeline** that loads the data into the Lakehouse using an **upsert approach** (inserting new records and updating existing ones) to efficiently synchronize between the source Microsoft default semantic model and the UUM Lakehouse targets.
+
+![UUM Load Usage Data](resources/uum-pipeline-get-usage.png "The Universal Usage Metrics Get Usage Data Flow")
+**Fabric Universal Usage Metrics -- Data Model Usage Flow**
+
+The pipeline optimizes performance by looping through the input and creating multiple parallel processing threads to get the lastest usage data facts and dimensions. 
+
+![UUM Load Usage Data in Parallel](resources/uum-pipeline-get-usage-foreach.png "The Universal Usage Metrics Get Usage Data Flow Parallell Processing Design")
+**Fabric Universal Usage Metrics -- Data Model Usage Flow Parallel Processing**
 
 
 ## **Conclusion**
