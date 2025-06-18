@@ -1,0 +1,347 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "4da26bd68ad8b23868fc",
+  "position": {
+    "x": 0,
+    "y": 0,
+    "z": 4000,
+    "height": 300.60606060606062,
+    "width": 307.31934731934734,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "usage_reports"
+                        }
+                      },
+                      "Hierarchy": "Workspace Hierarchy"
+                    }
+                  },
+                  "Level": "WorkspaceName"
+                }
+              },
+              "queryRef": "usage_reports.Workspace Hierarchy.WorkspaceName",
+              "nativeQueryRef": "Workspace Hierarchy WorkspaceName",
+              "active": true
+            },
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "usage_reports"
+                        }
+                      },
+                      "Hierarchy": "Workspace Hierarchy"
+                    }
+                  },
+                  "Level": "ReportName"
+                }
+              },
+              "queryRef": "usage_reports.Workspace Hierarchy.ReportName",
+              "nativeQueryRef": "Workspace Hierarchy ReportName",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
+    "expansionStates": [
+      {
+        "roles": [
+          "Values"
+        ],
+        "levels": [
+          {
+            "queryRefs": [
+              "usage_reports.Workspace Hierarchy.WorkspaceName"
+            ],
+            "isCollapsed": true,
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "usage_reports"
+                    }
+                  },
+                  "Property": "WorkspaceName"
+                }
+              }
+            ],
+            "isPinned": true
+          },
+          {
+            "queryRefs": [
+              "usage_reports.Workspace Hierarchy.ReportName"
+            ],
+            "isCollapsed": true,
+            "isPinned": true
+          }
+        ],
+        "root": {
+          "children": [
+            {
+              "identityValues": [
+                {
+                  "Literal": {
+                    "Value": "'AdventureWorks Dev'"
+                  }
+                }
+              ],
+              "isToggled": true
+            },
+            {
+              "identityValues": [
+                {
+                  "Literal": {
+                    "Value": "'Power BI CoE'"
+                  }
+                }
+              ],
+              "isToggled": true
+            }
+          ]
+        }
+      }
+    ],
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Basic'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "items": [
+        {
+          "properties": {
+            "textSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "filter": {
+              "filter": {
+                "Version": 2,
+                "From": [
+                  {
+                    "Name": "u",
+                    "Entity": "usage_reports",
+                    "Type": 0
+                  }
+                ],
+                "Where": [
+                  {
+                    "Condition": {
+                      "In": {
+                        "Expressions": [
+                          {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "u"
+                                }
+                              },
+                              "Property": "WorkspaceName"
+                            }
+                          },
+                          {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "u"
+                                }
+                              },
+                              "Property": "ReportName"
+                            }
+                          }
+                        ],
+                        "Values": [
+                          [
+                            {
+                              "Literal": {
+                                "Value": "'AdventureWorks Dev'"
+                              }
+                            },
+                            {
+                              "Literal": {
+                                "Value": "'Internet Sales'"
+                              }
+                            }
+                          ]
+                        ]
+                      }
+                    },
+                    "Annotations": {
+                      "filterExpressionMetadata": {
+                        "expressions": [
+                          {
+                            "HierarchyLevel": {
+                              "Expression": {
+                                "Hierarchy": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Entity": "usage_reports"
+                                    }
+                                  },
+                                  "Hierarchy": "Workspace Hierarchy"
+                                }
+                              },
+                              "Level": "WorkspaceName"
+                            }
+                          },
+                          {
+                            "HierarchyLevel": {
+                              "Expression": {
+                                "Hierarchy": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Entity": "usage_reports"
+                                    }
+                                  },
+                                  "Hierarchy": "Workspace Hierarchy"
+                                }
+                              },
+                              "Level": "ReportName"
+                            }
+                          }
+                        ],
+                        "decomposedIdentities": {
+                          "values": [
+                            [
+                              {
+                                "0": [
+                                  {
+                                    "Literal": {
+                                      "Value": "'AdventureWorks Dev'"
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "1": [
+                                  {
+                                    "Literal": {
+                                      "Value": "'Internet Sales'"
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          ],
+                          "columns": [
+                            {
+                              "value": {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Entity": "usage_reports"
+                                    }
+                                  },
+                                  "Property": "WorkspaceName"
+                                }
+                              }
+                            },
+                            {
+                              "value": {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Entity": "usage_reports"
+                                    }
+                                  },
+                                  "Property": "ReportName"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "valueMap": [
+                          {
+                            "0": "AdventureWorks Dev",
+                            "1": "Internet Sales"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "1ebc5ff6b202a9b5d00e",
+        "field": {
+          "HierarchyLevel": {
+            "Expression": {
+              "Hierarchy": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "usage_reports"
+                  }
+                },
+                "Hierarchy": "Workspace Hierarchy"
+              }
+            },
+            "Level": "WorkspaceName"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "5e10e467ba0804bde07c",
+        "field": {
+          "HierarchyLevel": {
+            "Expression": {
+              "Hierarchy": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "usage_reports"
+                  }
+                },
+                "Hierarchy": "Workspace Hierarchy"
+              }
+            },
+            "Level": "ReportName"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

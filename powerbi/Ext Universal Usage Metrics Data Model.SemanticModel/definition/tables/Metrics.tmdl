@@ -164,18 +164,24 @@ table Metrics
 		displayFolder: Embedding
 		lineageTag: 82135c9c-aaaa-4f36-961c-14a0085b5d95
 
-	measure 'Page views' =
+	measure 'Page views' = ```
 			
 			VAR sop =
-			    CALCULATE ( MIN ( 'calendar'[Date2Key] ), ALLSELECTED ( 'Calendar' ) )
+			    COALESCE ( CALCULATE ( MIN ( 'calendar'[Date2Key] ), ALLSELECTED ( 'Calendar' ) ), 0 )
 			VAR eop =
-			    CALCULATE ( MAX ( 'calendar'[Date2Key] ), ALLSELECTED ( 'Calendar' ) )
+			    COALESCE ( CALCULATE ( MAX ( 'calendar'[Date2Key] ), ALLSELECTED ( 'Calendar' ) ), 0 )
+			VAR minDate =
+			    COALESCE ( MIN ( 'calendar'[Date2Key] ), 0 )
+			VAR maxDate =
+			    COALESCE ( MAX ( 'calendar'[Date2Key] ), 0 )
 			RETURN
 			    IF (
-			        AND ( MIN ( 'calendar'[Date2Key] ) >= sop, MAX ( 'calendar'[Date2Key] ) <= eop ),
-			        COUNTROWS('page_views'),
+			        AND ( minDate >= sop, maxDate <= eop ),
+			        COALESCE ( COUNTROWS ( 'page_views' ), 0 ),
 			        0
 			    )
+			
+			```
 		formatString: 0
 		displayFolder: Views
 		lineageTag: e79678a3-0916-4305-b117-6134f7a3c150
@@ -742,7 +748,7 @@ table Metrics
 
 	measure 'First Usage' = ```
 			
-			MIN ( [First Page View], [First Report Open] )
+			COALESCE ( [First Page View], [First Report Open], TODAY() )
 			
 			```
 		formatString: General Date
@@ -751,7 +757,11 @@ table Metrics
 
 	measure 'Last Usage' = ```
 			
-			MAX ( [Last Page View], [Last Report Open] )
+			IF (
+			    NOT ISBLANK ( [Last Page View] ) && NOT ISBLANK ( [Last Report Open] ),
+			    MAX ( [Last Page View], [Last Report Open] ),
+			    COALESCE ( [Last Page View], [Last Report Open], TODAY() )
+			)
 			
 			```
 		formatString: General Date

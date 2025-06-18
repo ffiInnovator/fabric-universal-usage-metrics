@@ -10,7 +10,7 @@ annotation PBI_QueryOrder = ["usage_pages","usage_rank","usage_reports","usage_u
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBIDesktopVersion = 2.143.878.0 (25.05)+b20aa3b866ec1b70879135a4e60e4b1301c75b21
+annotation PBIDesktopVersion = 2.144.679.0 (25.06)+ef40146207b86a826d1c72a7727a743ee37450e9
 
 annotation PBI_ProTooling = ["WebModelingEdit","DaxQueryView_Desktop","DevMode"]
 

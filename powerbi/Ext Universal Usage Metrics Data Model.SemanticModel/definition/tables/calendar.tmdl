@@ -157,7 +157,9 @@ table calendar
 
 		annotation SummarizationSetBy = Automatic
 
-	column StartOfWeekDate = 'calendar'[Date2Key] - ('calendar'[Day] - 1)
+	column StartOfWeekDate =
+			
+			'calendar'[Date2Key] - WEEKDAY('calendar'[Date2Key], 1) + 1
 		dataType: dateTime
 		formatString: Long Date
 		lineageTag: b06f3f74-513d-47d9-8390-2f88373aed5b
