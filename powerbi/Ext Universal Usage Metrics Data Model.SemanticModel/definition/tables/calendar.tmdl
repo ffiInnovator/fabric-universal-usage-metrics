@@ -202,6 +202,15 @@ table calendar
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Has Refreshes' =
+			
+			AND ( 'calendar'[Date2Key] >= [First Refresh], 'calendar'[Date2Key] <= [Last Refresh] )
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 481d039d-1ea7-4bba-a2f5-3faf58d4550a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition calendar = m
 		mode: import
 		source =

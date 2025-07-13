@@ -1,0 +1,216 @@
+table dataset_refreshes
+	lineageTag: 878fb902-4af1-4489-80a1-723dedec909d
+
+	column DatasetId
+		dataType: string
+		lineageTag: 566a25b7-9683-43c0-96bf-1d68357ffacd
+		summarizeBy: none
+		sourceColumn: DatasetId
+
+		annotation SummarizationSetBy = Automatic
+
+	column refreshStartTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0412af4f-5ec5-48f6-bb98-eef985e38adc
+		summarizeBy: none
+		sourceColumn: refreshStartTime
+
+		variation Variation
+			isDefault
+			relationship: 42c36619-1160-4de1-82aa-8c32759f7dad
+			defaultHierarchy: LocalDateTable_e8018739-c733-40ee-b195-d19ecc268942.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column refreshEndTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b6239a10-c1d0-400f-aab7-3c17370c1e7e
+		summarizeBy: none
+		sourceColumn: refreshEndTime
+
+		variation Variation
+			isDefault
+			relationship: 4731322e-65f2-49b5-8a55-66f906bfe98c
+			defaultHierarchy: LocalDateTable_b62dcae3-3e39-4293-bbb5-7ee1dbd75508.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column refreshId
+		dataType: int64
+		formatString: 0
+		lineageTag: 7f5ef7b4-38b7-41ea-9876-a219d8e2301e
+		summarizeBy: count
+		sourceColumn: refreshId
+
+		annotation SummarizationSetBy = Automatic
+
+	column refreshStatus
+		dataType: string
+		lineageTag: 6e1c5e1c-67c8-4fd8-adf6-8812ad09f134
+		summarizeBy: none
+		sourceColumn: refreshStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column requestId
+		dataType: string
+		lineageTag: 40855444-e9d7-4174-a1af-e7d8a84ac9d5
+		summarizeBy: none
+		sourceColumn: requestId
+
+		annotation SummarizationSetBy = Automatic
+
+	column refreshType
+		dataType: string
+		lineageTag: aa7c9805-a8fa-4cf1-9312-44ef7b1d8fd7
+		summarizeBy: none
+		sourceColumn: refreshType
+
+		annotation SummarizationSetBy = Automatic
+
+	column attemptId
+		dataType: int64
+		formatString: 0
+		lineageTag: 922321fd-0abc-42d2-88d6-832299ac89ce
+		summarizeBy: count
+		sourceColumn: attemptId
+
+		annotation SummarizationSetBy = Automatic
+
+	column endTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 6e60f75a-bb87-4103-887c-248f1ed9c46a
+		summarizeBy: none
+		sourceColumn: endTime
+
+		variation Variation
+			isDefault
+			relationship: bb2cc15c-13ce-4ab9-8024-c628cc24f4c2
+			defaultHierarchy: LocalDateTable_e4046bf7-a8a7-45c5-8fff-afa2f6109cd7.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column startTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 60efcdd6-f4ff-4a41-b5ef-3282686fc3f1
+		summarizeBy: none
+		sourceColumn: startTime
+
+		variation Variation
+			isDefault
+			relationship: 7a2ceedc-add6-458a-bbc7-5704dd0b2c24
+			defaultHierarchy: LocalDateTable_46149524-0c94-408d-9395-e00b096a5ddc.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column type
+		dataType: string
+		lineageTag: 96296da7-ead6-4398-a358-dfd90ec48dbb
+		summarizeBy: none
+		sourceColumn: type
+
+		annotation SummarizationSetBy = Automatic
+
+	column errorCode
+		dataType: string
+		lineageTag: f620d41a-7e1e-4697-87be-63ca3e8404a6
+		summarizeBy: none
+		sourceColumn: errorCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column TimeId
+		dataType: int64
+		formatString: 0
+		lineageTag: e453bf2c-875a-4cab-8e4a-729f3f51d9e6
+		summarizeBy: none
+		sourceColumn: TimeId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreationDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 482f39f8-0b9d-42a9-8eba-66b65cf0e358
+		summarizeBy: none
+		sourceColumn: CreationDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Duration (s)' = IF([refreshStartTime] <> BLANK() && [refreshEndTime] <> BLANK(), DATEDIFF([refreshStartTime], [refreshEndTime], SECOND))
+		formatString: 0
+		lineageTag: 47433c63-6ed2-49e7-abe6-b54215c587da
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Duration (s) StdDev' =
+			
+			VAR vDSId = [DataSetId]
+			VAR vRefreshes =
+			    FILTER ( ALL ( 'dataset_refreshes' ), [DataSetId] = vDSId )
+			VAR vStdDev =
+			    STDEVX.S ( vRefreshes, [Duration (s)] )
+			RETURN
+			    IF ( ISERROR ( vStdDev ), 0, ROUNDDOWN ( vStdDev, 0 ) )
+		lineageTag: b72c27f5-8ecd-4fab-91fb-bf2133dec05e
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Workspace =
+			
+			RELATED(workspace_datasets[WorkspaceName])
+		lineageTag: 45ea3208-66fd-4962-9384-e7b43d4105ab
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Dataset =
+			
+			RELATED(workspace_datasets[DatasetName])
+		lineageTag: 8cf67b79-cbd5-4b35-a292-09fa94afdb08
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column WorkspaceId =
+			
+			RELATED(workspace_datasets[WorkspaceId])
+		lineageTag: d4cccc25-d379-4b3a-8679-3fa44736302e
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Workspace Hierarchy'
+		lineageTag: 1a3cc7d7-7f96-4d98-9533-7b081f06183a
+
+		level Workspace
+			lineageTag: f5caf064-d0e5-4b43-aa6a-eb708a8a7347
+			column: Workspace
+
+		level Dataset
+			lineageTag: ce4493fe-dc86-4341-b7b6-e24fb4311757
+			column: Dataset
+
+	partition dataset_refreshes = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("znbjxinpfs5u3cxz7s7bppllcq-4kbsyv3a5r4ulfsicaruwsrq2e.datawarehouse.fabric.microsoft.com", "FUAM_Ext_Lakehouse"),
+				    dbo_dataset_refreshes = Source{[Schema="dbo",Item="dataset_refreshes"]}[Data]
+				in
+				    dbo_dataset_refreshes
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -6,11 +6,11 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["usage_pages","usage_rank","usage_reports","usage_users","usage_workspace_reports","usage_workspace_views","report_views","page_views","load_times","Metrics","calendar","usage_workspaces","users"]
+annotation PBI_QueryOrder = ["usage_pages","usage_rank","usage_reports","usage_users","usage_workspace_reports","usage_workspace_views","report_views","page_views","load_times","Metrics","calendar","usage_workspaces","users","time","dataset_refreshes","workspace_datasets"]
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBIDesktopVersion = 2.144.679.0 (25.06)+ef40146207b86a826d1c72a7727a743ee37450e9
+annotation PBIDesktopVersion = 2.144.1378.0 (25.06)+cba1e61f16ea36d44901f06fa446299040122394
 
 annotation PBI_ProTooling = ["WebModelingEdit","DaxQueryView_Desktop","DevMode"]
 
@@ -37,6 +37,20 @@ ref table LocalDateTable_296bce1f-642d-4877-bb83-285a3b925990
 ref table usage_workspaces
 ref table LocalDateTable_18b1157c-f023-4e78-b9c9-6a5d48ef24cc
 ref table users
+ref table time
+ref table LocalDateTable_fb799cc2-4ce2-4dff-851b-7785f602b4e1
+ref table LocalDateTable_9290ff72-0e1b-466f-aa1e-37ab0bbe1dd7
+ref table LocalDateTable_c5193c3b-937b-4220-8d9f-c11984e8d084
+ref table LocalDateTable_14521d29-5402-494c-a153-dcffbbc5fe46
+ref table LocalDateTable_9bd070a2-244e-456e-95dc-af3305fb2105
+ref table LocalDateTable_09ef7691-b387-4274-b082-6ad99edf4a55
+ref table dataset_refreshes
+ref table LocalDateTable_e8018739-c733-40ee-b195-d19ecc268942
+ref table LocalDateTable_b62dcae3-3e39-4293-bbb5-7ee1dbd75508
+ref table LocalDateTable_e4046bf7-a8a7-45c5-8fff-afa2f6109cd7
+ref table LocalDateTable_46149524-0c94-408d-9395-e00b096a5ddc
+ref table workspace_datasets
+ref table LocalDateTable_d0b42e04-d751-40bd-bc16-a929a36c6b7d
 
 ref cultureInfo en-US
 

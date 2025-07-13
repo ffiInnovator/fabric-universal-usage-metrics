@@ -1101,6 +1101,122 @@ table Metrics
 		displayFolder: Display strings
 		lineageTag: d12bf75d-77a8-4861-8118-da95d3dad457
 
+	measure '# Refresh Errors' = CALCULATE([# Refreshes], 'dataset_refreshes'[refreshStatus] = "Failed") + 0
+		formatString: 0
+		displayFolder: Refreshes
+		lineageTag: 938188d6-af18-4d89-ba37-f5ad721bfc4d
+
+	measure '# Refreshes' = COUNTROWS('dataset_refreshes') + 0
+		formatString: 0
+		displayFolder: Refreshes
+		lineageTag: ae0edd14-1956-4e86-ba13-8f61272f1283
+
+	measure 'Avg. Refresh Duration (s)' = AVERAGE('dataset_refreshes'[Duration (s)])
+		displayFolder: Refreshes
+		lineageTag: f066184c-762c-484e-9e46-23f3bcd8634d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg. Refresh Duration (m)' = [Avg. Refresh Duration (s)] / 60
+		displayFolder: Refreshes
+		lineageTag: 6f918e5f-8283-4dde-819f-636de615dcde
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg. Refresh Duration (h)' = [Avg. Refresh Duration (m)] / 60
+		displayFolder: Refreshes
+		lineageTag: 7de5342f-4874-4674-888d-fe383bb182ee
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Refresh date filter' =
+			
+			"Dataset refreshes based on data from " & [First Refresh] & " to " & [Last Refresh]
+		displayFolder: Dynamic subtitles
+		lineageTag: e2392388-dfec-4559-9c14-c32171d46b5a
+
+	measure '# Refreshed datasets' = DISTINCTCOUNT( 'dataset_refreshes'[DatasetId] )
+		formatString: 0
+		displayFolder: Refreshes
+		lineageTag: 1699a6b3-445e-4a0c-b683-057881cb48a5
+
+	measure '# Refreshed dataset workspaces' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(workspace_datasets[WorkspaceId]),
+			    TREATAS(
+			        VALUES(dataset_refreshes[DatasetId]),
+			        workspace_datasets[DatasetId]
+			    )
+			)
+		formatString: 0
+		displayFolder: Refreshes
+		lineageTag: 49df75f5-1bb6-469b-8449-5d158519ea09
+
+	measure 'Workspace and dataset filter' =
+			
+			VAR WorkspaceDesc =
+			    IF (
+			        ISFILTERED ( 'dataset_refreshes'[Workspace] ),
+			        IF (
+			            [Workspaces refresh] = 1,
+			            VALUES ( 'dataset_refreshes'[Workspace] ),
+			            "Multiple" & " (" & [Workspaces refresh] & ")"
+			        ),
+			        "All"
+			    )
+			VAR DatasetDesc =
+			    IF (
+			        ISFILTERED ( 'dataset_refreshes'[Dataset] ),
+			        IF (
+			            AND ( [Workspaces refresh] > 1, [Dataset names] = 1 ),
+			            VALUES ( 'dataset_refreshes'[Dataset] ),
+			            IF (
+			                [Dataset names] = 1,
+			                VALUES ( 'dataset_refreshes'[Dataset] ),
+			                "Multiple" & " (" & [Datasets] & ")"
+			            )
+			        ),
+			        "All"
+			    )
+			RETURN
+			    "Workspace: " & WorkspaceDesc & " | Dataset: " & DatasetDesc
+		displayFolder: Dynamic subtitles
+		lineageTag: e68b634c-3111-4777-88a5-44a612c4c2cc
+
+	measure 'Workspaces refresh' = DISTINCTCOUNT( 'dataset_refreshes'[WorkspaceId] )
+		formatString: 0
+		displayFolder: Dynamic subtitles
+		lineageTag: 81017ac5-be3d-4253-aa05-d041c6e85e11
+
+	measure Datasets = DISTINCTCOUNT( 'dataset_refreshes'[DatasetId] )
+		formatString: 0
+		displayFolder: Dynamic subtitles
+		lineageTag: c24751ed-114d-41f2-afbf-471d3ff0964e
+
+	measure 'Dataset names' = DISTINCTCOUNT( 'dataset_refreshes'[Dataset] )
+		formatString: 0
+		displayFolder: Dynamic subtitles
+		lineageTag: 69c808ae-ae4c-4f1a-b27a-0b5ad5615e12
+
+	measure 'First Refresh' = ```
+			
+			MIN ( 'dataset_refreshes'[CreationDate] )
+			
+			```
+		formatString: General Date
+		displayFolder: Dynamic subtitles
+		lineageTag: 95e1d81f-4481-4178-a1c7-ad2ba0c5338f
+
+	measure 'Last Refresh' = ```
+			
+			MAX ( 'dataset_refreshes'[CreationDate] )
+			
+			```
+		formatString: General Date
+		displayFolder: Dynamic subtitles
+		lineageTag: 5376837d-1d25-4777-8518-38ad37978c13
+
 	partition Metrics = m
 		mode: import
 		source =

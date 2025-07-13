@@ -1,0 +1,155 @@
+table workspace_datasets
+	lineageTag: 8667c5c8-5fd8-4d03-81b9-55a92f47e8dc
+
+	column CapacityId
+		dataType: string
+		lineageTag: b79a5487-b669-446b-942a-27ed3143644c
+		summarizeBy: none
+		sourceColumn: CapacityId
+
+		annotation SummarizationSetBy = Automatic
+
+	column WorkspaceId
+		dataType: string
+		lineageTag: 6253d1da-fdc3-4a12-8750-c349da75991a
+		summarizeBy: none
+		sourceColumn: WorkspaceId
+
+		annotation SummarizationSetBy = Automatic
+
+	column WorkspaceDescription
+		dataType: string
+		lineageTag: e1489f48-ccfc-4699-bc7f-20c01fa3a4a5
+		summarizeBy: none
+		sourceColumn: WorkspaceDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column HasWorkspaceLevelSettings
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: e7340829-59cf-4dc2-b424-7f92a159a279
+		summarizeBy: none
+		sourceColumn: HasWorkspaceLevelSettings
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsOnDedicatedCapacity
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: d2f3cdb4-89c2-4647-94e2-a27ef5073540
+		summarizeBy: none
+		sourceColumn: IsOnDedicatedCapacity
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsReadOnly
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 5df0e138-2d0e-4b04-b98c-515ad302f2a1
+		summarizeBy: none
+		sourceColumn: IsReadOnly
+
+		annotation SummarizationSetBy = Automatic
+
+	column WorkspaceName
+		dataType: string
+		lineageTag: ec17faf2-b02f-46b1-aff5-4068f2c5c789
+		summarizeBy: none
+		sourceColumn: WorkspaceName
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: 284bc9ca-e2d2-4b03-b250-ed5ce8daf25e
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column Type
+		dataType: string
+		lineageTag: 35ff9b45-83f6-4e6b-aeed-2acd86b4177c
+		summarizeBy: none
+		sourceColumn: Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column DatasetId
+		dataType: string
+		lineageTag: 5c9ac5b2-8f70-4373-aeec-82e56d586981
+		summarizeBy: none
+		sourceColumn: DatasetId
+
+		annotation SummarizationSetBy = Automatic
+
+	column DatasetName
+		dataType: string
+		lineageTag: dfe26384-0777-4d3a-a9b4-1eaf73cc1132
+		summarizeBy: none
+		sourceColumn: DatasetName
+
+		annotation SummarizationSetBy = Automatic
+
+	column DatasetConfiguredBy
+		dataType: string
+		lineageTag: 02902085-8924-4812-a278-7c65c9039106
+		summarizeBy: none
+		sourceColumn: DatasetConfiguredBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsDatasetRefreshable
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 2ff545f8-6624-469a-8a4a-f09b0f707cfb
+		summarizeBy: none
+		sourceColumn: IsDatasetRefreshable
+
+		annotation SummarizationSetBy = Automatic
+
+	column DatasetCreatedDate
+		dataType: string
+		lineageTag: 2ada8d3c-7719-4cd7-ac3c-20fe32928d47
+		summarizeBy: none
+		sourceColumn: DatasetCreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column fuam_modified_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: c507b547-8688-4e15-a5f2-ec375a58f68d
+		summarizeBy: none
+		sourceColumn: fuam_modified_at
+
+		variation Variation
+			isDefault
+			relationship: f448e03e-251b-4b44-a1a7-a45315537b99
+			defaultHierarchy: LocalDateTable_d0b42e04-d751-40bd-bc16-a929a36c6b7d.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column fuam_deleted
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: f1c83a39-c378-497e-b941-2e30a1905b60
+		summarizeBy: none
+		sourceColumn: fuam_deleted
+
+		annotation SummarizationSetBy = Automatic
+
+	partition workspace_datasets = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("znbjxinpfs5u3cxz7s7bppllcq-4kbsyv3a5r4ulfsicaruwsrq2e.datawarehouse.fabric.microsoft.com", "FUAM_Ext_Lakehouse"),
+				    dbo_workspace_datasets = Source{[Schema="dbo",Item="workspace_datasets"]}[Data]
+				in
+				    dbo_workspace_datasets
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

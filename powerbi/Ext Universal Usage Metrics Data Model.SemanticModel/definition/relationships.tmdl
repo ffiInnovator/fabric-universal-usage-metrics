@@ -99,3 +99,74 @@ relationship 1d65d0c5-22ed-f5ca-9366-b15f5ee735a7
 	fromColumn: usage_users.UniqueUser
 	toColumn: users.UserPrincipalName
 
+relationship 58ccff1b-fe4b-476e-94ae-284894b2b9d5
+	joinOnDateBehavior: datePartOnly
+	fromColumn: time.Minute
+	toColumn: LocalDateTable_fb799cc2-4ce2-4dff-851b-7785f602b4e1.Date
+
+relationship a966c8c5-a1ee-430b-91a4-89bafc9e1eca
+	joinOnDateBehavior: datePartOnly
+	fromColumn: time.QuarterHour
+	toColumn: LocalDateTable_9290ff72-0e1b-466f-aa1e-37ab0bbe1dd7.Date
+
+relationship 4607b2e3-6318-4394-962a-333705d09a76
+	joinOnDateBehavior: datePartOnly
+	fromColumn: time.HalfHour
+	toColumn: LocalDateTable_c5193c3b-937b-4220-8d9f-c11984e8d084.Date
+
+relationship 19e1643a-3818-41a8-96d1-4c0c5124159b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: time.Hour
+	toColumn: LocalDateTable_14521d29-5402-494c-a153-dcffbbc5fe46.Date
+
+relationship 8adee374-c40b-4c09-b474-3decbb08410d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: time.DayPeriodStart
+	toColumn: LocalDateTable_9bd070a2-244e-456e-95dc-af3305fb2105.Date
+
+relationship d6102f38-1ba5-41db-a1e2-18c4ee0dc75c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: time.DayPeriodEnd
+	toColumn: LocalDateTable_09ef7691-b387-4274-b082-6ad99edf4a55.Date
+
+relationship 42c36619-1160-4de1-82aa-8c32759f7dad
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dataset_refreshes.refreshStartTime
+	toColumn: LocalDateTable_e8018739-c733-40ee-b195-d19ecc268942.Date
+
+relationship 4731322e-65f2-49b5-8a55-66f906bfe98c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dataset_refreshes.refreshEndTime
+	toColumn: LocalDateTable_b62dcae3-3e39-4293-bbb5-7ee1dbd75508.Date
+
+relationship bb2cc15c-13ce-4ab9-8024-c628cc24f4c2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dataset_refreshes.endTime
+	toColumn: LocalDateTable_e4046bf7-a8a7-45c5-8fff-afa2f6109cd7.Date
+
+relationship 7a2ceedc-add6-458a-bbc7-5704dd0b2c24
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dataset_refreshes.startTime
+	toColumn: LocalDateTable_46149524-0c94-408d-9395-e00b096a5ddc.Date
+
+relationship AutoDetected_1085fc29-4504-463e-9475-8f36af9d68a8
+	fromColumn: dataset_refreshes.TimeId
+	toColumn: time.TimeId
+
+relationship f448e03e-251b-4b44-a1a7-a45315537b99
+	joinOnDateBehavior: datePartOnly
+	fromColumn: workspace_datasets.fuam_modified_at
+	toColumn: LocalDateTable_d0b42e04-d751-40bd-bc16-a929a36c6b7d.Date
+
+relationship AutoDetected_a9eae8d2-b82a-4b43-9dc7-c37e9280efa0
+	fromColumn: workspace_datasets.WorkspaceId
+	toColumn: usage_workspaces.WorkspaceId
+
+relationship AutoDetected_c99d2c3e-0c82-4579-b647-33a4e070c940
+	fromColumn: dataset_refreshes.DatasetId
+	toColumn: workspace_datasets.DatasetId
+
+relationship b7e8b491-4dd3-f3a4-44b0-145f8aae7461
+	fromColumn: dataset_refreshes.CreationDate
+	toColumn: calendar.Date2Key
+

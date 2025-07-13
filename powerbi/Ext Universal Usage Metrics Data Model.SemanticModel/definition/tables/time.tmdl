@@ -1,0 +1,153 @@
+table time
+	lineageTag: 1801c7fe-fb83-46cd-9a8f-1adc0338b8c8
+
+	column TimeId
+		dataType: int64
+		formatString: 0
+		lineageTag: ebc4c4a0-36b2-46d7-8931-5fd81562af06
+		summarizeBy: none
+		sourceColumn: TimeId
+
+		annotation SummarizationSetBy = Automatic
+
+	column MinuteNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: dcd3bb83-9fd2-4f66-a8a9-d15b08511c2f
+		summarizeBy: sum
+		sourceColumn: MinuteNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column Minute
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2720d106-5abe-4eda-8adc-71e4edfb07dd
+		summarizeBy: none
+		sourceColumn: Minute
+
+		variation Variation
+			isDefault
+			relationship: 58ccff1b-fe4b-476e-94ae-284894b2b9d5
+			defaultHierarchy: LocalDateTable_fb799cc2-4ce2-4dff-851b-7785f602b4e1.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuarterHour
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 37196ac7-b709-408b-99f3-0198b5bc2382
+		summarizeBy: none
+		sourceColumn: QuarterHour
+
+		variation Variation
+			isDefault
+			relationship: a966c8c5-a1ee-430b-91a4-89bafc9e1eca
+			defaultHierarchy: LocalDateTable_9290ff72-0e1b-466f-aa1e-37ab0bbe1dd7.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column HalfHour
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0c18e356-4824-41ff-b5f3-2fbe454f1b3e
+		summarizeBy: none
+		sourceColumn: HalfHour
+
+		variation Variation
+			isDefault
+			relationship: 4607b2e3-6318-4394-962a-333705d09a76
+			defaultHierarchy: LocalDateTable_c5193c3b-937b-4220-8d9f-c11984e8d084.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column HourNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: ad06a12c-29ed-4502-ad66-5438ae13510c
+		summarizeBy: sum
+		sourceColumn: HourNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column Hour
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5fde269a-88ca-4e55-a140-c992484ec840
+		summarizeBy: none
+		sourceColumn: Hour
+
+		variation Variation
+			isDefault
+			relationship: 19e1643a-3818-41a8-96d1-4c0c5124159b
+			defaultHierarchy: LocalDateTable_14521d29-5402-494c-a153-dcffbbc5fe46.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayPeriodStart
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 43698c28-f85c-4c6f-b015-c64fd25f4a8d
+		summarizeBy: none
+		sourceColumn: DayPeriodStart
+
+		variation Variation
+			isDefault
+			relationship: 8adee374-c40b-4c09-b474-3decbb08410d
+			defaultHierarchy: LocalDateTable_9bd070a2-244e-456e-95dc-af3305fb2105.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayPeriodEnd
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b29c2736-e99d-4ea2-ac0b-29618d4b49fa
+		summarizeBy: none
+		sourceColumn: DayPeriodEnd
+
+		variation Variation
+			isDefault
+			relationship: d6102f38-1ba5-41db-a1e2-18c4ee0dc75c
+			defaultHierarchy: LocalDateTable_09ef7691-b387-4274-b082-6ad99edf4a55.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayPeriod
+		dataType: string
+		lineageTag: 6dbea51c-07a4-43c4-8524-4b857350d474
+		summarizeBy: none
+		sourceColumn: DayPeriod
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsAM
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: dc99e5b7-e5cb-44b1-b5cf-45e2523142b8
+		summarizeBy: none
+		sourceColumn: IsAM
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsBusinessHour
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: f706fa7b-2ada-4cbb-ac4c-e0cd4fa07d16
+		summarizeBy: none
+		sourceColumn: IsBusinessHour
+
+		annotation SummarizationSetBy = Automatic
+
+	partition time = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("znbjxinpfs5u3cxz7s7bppllcq-4kbsyv3a5r4ulfsicaruwsrq2e.datawarehouse.fabric.microsoft.com", "FUAM_Ext_Lakehouse"),
+				    dbo_time = Source{[Schema="dbo",Item="time"]}[Data]
+				in
+				    dbo_time
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
