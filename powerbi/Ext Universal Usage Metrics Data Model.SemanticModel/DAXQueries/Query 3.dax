@@ -1,0 +1,18 @@
+// A table exists 'dataset_refreshes' with the date column 'CreationDate'.
+// Write the DAX query to count the number of refreshes grouped by date in YYYY-MM-DD format.
+EVALUATE
+SUMMARIZE(
+    SELECTCOLUMNS(
+        dataset_refreshes,
+        "FormattedDate", FORMAT(dataset_refreshes[CreationDate], "yyyy-MM-dd")
+    ),
+    [FormattedDate],
+    "RefreshCount",
+    COUNTROWS(
+        FILTER(
+            dataset_refreshes,
+            FORMAT(dataset_refreshes[CreationDate], "yyyy-MM-dd") = [FormattedDate]
+        )
+    )
+)
+ORDER BY [FormattedDate] DESC

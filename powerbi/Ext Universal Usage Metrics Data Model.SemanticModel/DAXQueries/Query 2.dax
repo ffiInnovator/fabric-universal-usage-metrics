@@ -1,0 +1,18 @@
+// A table exists 'report_views' with the date column 'CreationDate'.
+// Write the DAX query to count the number of views grouped by date in YYYY-MM-DD format.
+EVALUATE
+SUMMARIZE(
+    SELECTCOLUMNS(
+        report_views,
+        "FormattedDate", FORMAT(report_views[CreationDate], "yyyy-MM-dd")
+    ),
+    [FormattedDate],
+    "ViewCount",
+    COUNTROWS(
+        FILTER(
+            report_views,
+            FORMAT(report_views[CreationDate], "yyyy-MM-dd") = [FormattedDate]
+        )
+    )
+)
+ORDER BY [FormattedDate] DESC

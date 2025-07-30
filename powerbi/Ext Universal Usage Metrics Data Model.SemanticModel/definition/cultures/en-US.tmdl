@@ -17539,16 +17539,6 @@ cultureInfo en-US
 			          "workspaces": {
 			            "State": "Generated"
 			          }
-			        },
-			        {
-			          "# Report usage workspaces": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
 			        }
 			      ]
 			    },
